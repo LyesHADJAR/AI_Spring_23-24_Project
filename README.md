@@ -16,9 +16,12 @@ b. What is the country’s consumption of main products: wheat, corn, dates, pot
 c. Changes in product prices according to the seasons
 
 d. Suppose we ultimately want to:
+
   i. Have the lowest prices for the consumer (what does lowest price mean? Think about a
     meaningful definition)
+    
   ii. Have the highest production (in some products? Some strategic products? Etc.?)
+  
   iii. Self-sufficiency in the production of products (all? some products? Some strategic
     products? Etc.?)
     
