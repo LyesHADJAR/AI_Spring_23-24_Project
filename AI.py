@@ -74,27 +74,24 @@ class Search:
         return None
 
 class AgricultureProblem:
-    def __init__(self, initial_state, Search_method, objectives):
+    def __init__(self, initial_state, Search_method, objective):
         self.initial_state = initial_state
         self.Search_method = Search_method
-        self.objectives = objectives
+        self.objective = objective
 
     def cost(self, state):
         total_land_used = sum(product.land_used for city in state.cities for product in city.products)
         return total_land_used
 
     def heuristic(self, state):
-        total_land_needed = 0
-        for product in state.products:
-            land_needed = product.production / (product.land_used + 1)  
-            total_land_needed += land_needed
+    total_land_needed = 0
+    for product in state.products:
+        land_difference = self.goal_state.cities[0].products[product.name].land_used - \
+                          state.cities[0].products[product.name].land_used
+        total_land_needed += land_difference
 
-        goal_land_used = sum(product.land_used for city in self.goal_state.cities for product in city.products)
-        for product in self.goal_state.products:
-            land_needed = product.production / (product.land_used + 1)
-            total_land_needed += land_needed
+    return total_land_needed
 
-        return total_land_needed
 
     def goal_finder(self, objective_number):
         if objective_number == 1:
@@ -105,6 +102,7 @@ class AgricultureProblem:
             return self.goal_function_for_objective3
         else:
             raise ValueError("Invalid objective number")
+
 
     def goal_function_for_objective3(self, state):
         for product in state.products:
