@@ -9,10 +9,10 @@ def goal_finder(self, objective_number):
         else:
             raise ValueError("Invalid objective number")
 
-    #Goal_function for self-sufficiency for each product:
-    def goal_function_for_objective3(self, state):
-        for product in state.products:
-            total_production = sum(city.products[product.name].production for city in state.cities)
-            if total_production < self.goal_state.consumption[product.name]:
-                return False
-        return True
+#Goal_function for self-sufficiency for each product:
+def goal_function_for_objective3(self, state):
+    for product in state.products:
+        total_production = sum(city.products[product.name].production for city in state.cities)
+        if total_production < self.goal_state.consumption[product.name]:
+            return False
+    return True
