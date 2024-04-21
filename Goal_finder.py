@@ -16,3 +16,27 @@ def goal_function_for_objective3(self, state):
         if total_production < self.goal_state.consumption[product.name]:
             return False
     return True
+  
+#   I need a goal_function_for_objective1 function for the following 
+# The lowest price for a product will be based on the used land for it
+# raise in production -> lower price 
+# and we have production = consumtion * ( 1 + safety margin )
+# safty margine = productivity / 1000
+# Productivity = Production / land 
+
+def goal_function_for_objective1(self, state):
+  for state.city in state.cities:
+    for product in state.products:
+      
+      production = state.city.products[product.name].production
+      consumption = self.goal_state.consumption[product.name]
+      landUsed = state.city.products[product.name].land_used
+      productivity = production / landUsed
+      
+      if state.city.products[product.name].production > self.goal_state.consumption[product.name]:
+        return True
+      else:
+        newProd = consumption * ( 1 + (productivity / 1000) ) - production
+        newLand = newProd / productivity
+        landUsed += newLand
+        return True
