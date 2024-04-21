@@ -17,12 +17,6 @@ def goal_function_for_objective3(self, state):
             return False
     return True
   
-#   I need a goal_function_for_objective1 function for the following 
-# The lowest price for a product will be based on the used land for it
-# raise in production -> lower price 
-# and we have production = consumtion * ( 1 + safety margin )
-# safty margine = productivity / 1000
-# Productivity = Production / land 
 
 def goal_function_for_objective1(self, state):
   for state.city in state.cities:
@@ -40,3 +34,4 @@ def goal_function_for_objective1(self, state):
         newLand = newProd / productivity
         landUsed += newLand
         return True
+# We need to discuss how to update the prices here
