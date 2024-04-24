@@ -194,3 +194,25 @@ class AgricultureProblem:
 
     def actions(self, state):
         return []
+
+    # This part is for Hill Climbing ( steapest ascent )
+    def Hill_Climbing(self, state):
+        current_state = state
+        while True:
+            neighbor = self.best_neighbor(current_state)
+            if self.heuristic_hill_climbing(neighbor) >= self.heuristic_hill_climbing(current_state):
+                return current_state
+            current_state = neighbor
+            
+    def best_neighbor(self, state):
+        best_state = state
+        for action in self.actions(state):
+            neighbor = self.result(state, action)
+            if self.heuristic_hill_climbing(neighbor) > self.heuristic_hill_climbing(best_state):
+                best_state = neighbor
+        return best_state
+      
+    def heuristic_hill_climbing(self, state):
+        average_productivity = sum(city.products[product.name].production / city.products[product.name].land_used
+                                   for city in state.cities for product in city.products) / len(state.products)
+        return self.state.products[0].production / self.state.products[0].land_used - average_productivity
