@@ -19,8 +19,8 @@ def goal_function_for_objective3(self, state):
   
 
 def goal_function_for_objective1(self, state):
-  for state.city in state.cities:
-    for product in state.products:
+  for product in state.products:
+    for city in state.cities: 
       
       production = state.city.products[product.name].production
       consumption = self.goal_state.consumption[product.name]
