@@ -111,7 +111,7 @@ class AgricultureProblem:
                     )
                     if temp < productivity:
                         productivity = temp
-            production_needed = min(0,
+            production_needed = max(0,
                 self.goal_state.total_production[product]
                 - state.total_production[product]
             )
