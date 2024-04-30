@@ -171,17 +171,17 @@ class AgricultureProblem:
 
 
     def get_best_neighbor(self, node):
-    best_neighbor = None
-    best_value = float('inf')
+      best_neighbor = None
+      best_value = float('inf')
 
-    for action in self.actions(node.state):
+      for action in self.actions(node.state):
         child_state = self.result(node.state, action)
         child_value = self.heuristic(child_state)
         if child_value < best_value:
             best_neighbor = child_state
             best_value = child_value
 
-    return best_neighbor
+      return best_neighbor
    
     def result(self, state, action):
         return action
@@ -206,7 +206,7 @@ class AgricultureProblem:
         for city in state.cities:
             for product in city.products:
                 #update actions
-                actions.append(("IncreaseProduction", city.name, product.name
+                actions.append("IncreaseProduction", city.name, product.name)
 
     
     # This part is for Hill Climbing ( steapest ascent )
