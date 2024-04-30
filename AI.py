@@ -203,16 +203,12 @@ class AgricultureProblem:
         return node.priority
 
 
-        def actions(self, state):
+    def actions(self, state):
         actions = []
         for city in state.cities:
             for product in city.products:
-<<<<<<< HEAD
                 #update actions
                 actions.append("IncreaseProduction", city.name, product.name)
-=======
-                actions.append(("IncreaseProduction", city.name, product.name))
->>>>>>> 0afca81cf08b81fad1b927ac352de9331d6382b7
 
     
     # This part is for Hill Climbing ( steapest ascent )
