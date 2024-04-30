@@ -176,7 +176,15 @@ class AgricultureProblem:
       return best_neighbor
    
     def result(self, state, action):
-        return action
+        newState = copy.deepcopy(state)
+        additionalProduction = 10 # the constant to be fixed
+        additionalLand = 10 # the constatn to be fixed
+        newState.total_producton[action[1]] += additionalProduction
+        newState.land_used[action[1]] += additionalLand
+        total_land_used = state.get_total_land_used(state) # To be added ez
+        newNode = Node(newState, state, action,total_land_used, 0)
+        newNode.priority = self.As_node_cost(newNode)
+        return newNode 
 
     def goal_test(self, state):
         goal_function = self.goal_finder(len(self.objective))
