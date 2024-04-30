@@ -281,3 +281,5 @@ class AgricultureProblem:
             new_goal.update_Production(
                 key, Additional_production[key]
             )  # needs to be definded ez
+
+        return new_goal
