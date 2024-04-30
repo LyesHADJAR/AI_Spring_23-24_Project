@@ -2,11 +2,13 @@ import heapq
 
 
 class Product:
-    def __init__(self, name, prices, land_used, production):
+    def __init__(self, name, prices, land_used, production, Strategic, productivity):
         self.name = name
-        self.prices = prices
+        self.prices = prices  
         self.land_used = land_used
         self.production = production
+        self.Strategic = Strategic
+        self.productivity = productivity
 
 
 class City:
@@ -18,9 +20,10 @@ class City:
 
 
 class Country:
-    def __init__(self, cities, consumption):
+    def __init__(self, cities, consumption , total_production):
         self.cities = cities
         self.consumption = consumption
+        self.total_production = total_production
 
     def __repr__(self):
         return f"Country with cities: {[city.name for city in self.cities]}"
@@ -52,32 +55,68 @@ class PriorityQueue:
     def get(self):
         return heapq.heappop(self.elements)[1]
 
+class GraphSearch:
+    def __init__(self, problem, strategy):
+        self.problem = problem
+        self.strategy = strategy
 
-class Search:
-    def __init__(self):
-        pass
-
-    def general_search(self, problem, frontier):
+    def general_search(self):
+        initial_node = Node(self.problem.initial_state)
         explored = set()
-        initial_node = Node(problem.initial_state)
-        frontier.put(initial_node, 0)
+        frontier = PriorityQueue()
+        frontier.put(initial_node, 0)  
+
+        if self.strategy == "IDA_star":
+            threshold = float('inf')  
+        elif self.strategy == "IDS":
+            depth = 0 
 
         while not frontier.empty():
-            current_node = frontier.get()
+            node = frontier.get()
 
-            if problem.goal_test(current_node.state):
-                return current_node
+            if self.strategy == "steepest":
+                current_state = node.state
+                best_neighbor = self.problem.get_best_neighbor(current_state)
+                if best_neighbor:
+                    child_node = Node(best_neighbor, parent=node)
+                    frontier.put(child_node, self.problem.heuristic(best_neighbor))
+                else:
+                    return "failure"     
+            else:
+                if self.problem.goal_test(node.state):
+                    return self.get_path(node)
 
-            explored.add(current_node.state)
-            for action in problem.actions(current_node.state):
-                child_state = problem.result(current_node.state, action)
+            explored.add(node.state)
+
+            for action in self.problem.actions(node.state):
+                child_state = self.problem.result(node.state, action)
                 if child_state not in explored:
-                    child_node = Node(state=child_state, parent=current_node)
-                    child_cost = problem.cost(child_state)
-                    frontier.put(child_node, child_cost)
-                    explored.add(child_state)
+                    child_node = Node(child_state, node, action, node.cost + self.problem.cost(child_state))
+                    priority = self.problem.As_node_cost(child_node)
+                    frontier.put(child_node, priority)
 
-        return None
+                if self.strategy == "IDA_star":
+                    if priority > threshold:
+                        return "failure"
+                    threshold = min(threshold, priority)
+                elif self.strategy == "IDS":
+                    if node.depth > depth:
+                        return "failure"
+                    depth += 1
+                elif self.strategy == "UCS":
+                    if node.cost > frontier.elements[0][0]:  
+                        return "failure"
+
+        return "failure"
+
+
+    def get_path(self, node):
+        path = []
+        while node:
+            path.append(node.state)
+            node = node.parent
+        return list(reversed(path))
+
 
 
 class AgricultureProblem:
@@ -130,15 +169,20 @@ class AgricultureProblem:
         else:
             raise ValueError("Invalid objective number")
 
-    def goal_function_for_objective3(self, state):
-        for product in state.products:
-            total_production = sum(
-                city.products[product.name].production for city in state.cities
-            )
-            if total_production < self.goal_state.consumption[product.name]:
-                return False
-        return True
 
+    def get_best_neighbor(self, node):
+    best_neighbor = None
+    best_value = float('inf')
+
+    for action in self.actions(node.state):
+        child_state = self.result(node.state, action)
+        child_value = self.heuristic(child_state)
+        if child_value < best_value:
+            best_neighbor = child_state
+            best_value = child_value
+
+    return best_neighbor
+   
     def result(self, state, action):
         return action
 
@@ -156,45 +200,15 @@ class AgricultureProblem:
             node.priority = heuristic_cost
         return node.priority
 
-    def search(self):
-        search = Search()
 
-        if self.Search_method == "UCS":
-            return search.general_search(self, PriorityQueue())
+        def actions(self, state):
+        actions = []
+        for city in state.cities:
+            for product in city.products:
+                #update actions
+                actions.append(("IncreaseProduction", city.name, product.name
 
-        elif self.Search_method == "IDS":
-            return self.ids_search(search)
-
-        elif self.Search_method == "IDA_star":
-            return self.ida_star_search(search)
-
-        return None
-
-    def ids_search(self, search):
-        depth = 0
-        while True:
-            result = search.general_search(self, PriorityQueue())
-            if result == "FOUND":
-                return result
-            if result == float("inf"):
-                return None
-            depth += 1
-
-    def ida_star_search(self, search):
-        threshold = self.As_node_cost(Node(self.initial_state))
-        while True:
-            result = search.depth_limited_search(
-                self, Node(self.initial_state), threshold
-            )
-            if result == "FOUND":
-                return result
-            if result == float("inf"):
-                return None
-            threshold = result
-
-    def actions(self, state):
-        return []
-
+    
     # This part is for Hill Climbing ( steapest ascent )
     def Hill_Climbing(self, state):
         current_state = state
