@@ -17,7 +17,7 @@ class City:
         self.agriculture_land = agriculture_land
         self.unused_land = unused_land
         self.land_used = land_used
-        self.products = sorted(products, key=lambda x: (x.production, x.prices))
+        self.products = products
 
 
 class Country:
