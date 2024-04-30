@@ -274,8 +274,6 @@ def generate_second_goal(initial_state, goal_state):
                 average_productivity[key] * additional_land_non_strategic
             )
 
-    # we need a dict in country class that has the total production of each product and also the total cosumption and also the price
-    # we need to modify product class to ommit the prices member because it is gloal on the country so we will have repitition
 
     for key in Additional_production.keys():
         new_goal.update_Production(
@@ -283,8 +281,6 @@ def generate_second_goal(initial_state, goal_state):
         )  # needs to be definded ez
 
 
-# we need 2 types of data one according to the wilaya and one according to the country so that when we make it easer to both
-# search for wilaya specific data and to generate a goal according to the total production
 
 
     def self_sufficiency(self, state):
