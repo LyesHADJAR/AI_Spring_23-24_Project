@@ -161,16 +161,6 @@ class AgricultureProblem:
 
         return total_land_needed
 
-    def goal_finder(self, objective_number):
-        if objective_number == 1:
-            return self.goal_function_for_objective1
-        elif objective_number == 2:
-            return self.goal_function_for_objective2
-        elif objective_number == 3:
-            return self.goal_function_for_objective3
-        else:
-            raise ValueError("Invalid objective number")
-
 
     def get_best_neighbor(self, node):
       best_neighbor = None
@@ -211,27 +201,27 @@ class AgricultureProblem:
                 actions.append("IncreaseProduction", city.name, product.name)
 
     
-    # This part is for Hill Climbing ( steapest ascent )
-    def Hill_Climbing(self, state):
-        current_state = state
-        while True:
-            neighbor = self.best_neighbor(current_state)
-            if self.heuristic_hill_climbing(neighbor) >= self.heuristic_hill_climbing(current_state):
-                return current_state
-            current_state = neighbor
+    # # This part is for Hill Climbing ( steapest ascent )
+    # def Hill_Climbing(self, state):
+    #     current_state = state
+    #     while True:
+    #         neighbor = self.best_neighbor(current_state)
+    #         if self.heuristic_hill_climbing(neighbor) >= self.heuristic_hill_climbing(current_state):
+    #             return current_state
+    #         current_state = neighbor
             
-    def best_neighbor(self, state):
-        best_state = state
-        for action in self.actions(state):
-            neighbor = self.result(state, action)
-            if self.heuristic_hill_climbing(neighbor) > self.heuristic_hill_climbing(best_state):
-                best_state = neighbor
-        return best_state
+    # def best_neighbor(self, state):
+    #     best_state = state
+    #     for action in self.actions(state):
+    #         neighbor = self.result(state, action)
+    #         if self.heuristic_hill_climbing(neighbor) > self.heuristic_hill_climbing(best_state):
+    #             best_state = neighbor
+    #     return best_state
       
-    def heuristic_hill_climbing(self, state):
-        average_productivity = sum(city.products[product.name].production / city.products[product.name].land_used
-                                   for city in state.cities for product in city.products) / len(state.products)
-        return self.state.products[0].production / self.state.products[0].land_used - average_productivity
+    # def heuristic_hill_climbing(self, state):
+    #     average_productivity = sum(city.products[product.name].production / city.products[product.name].land_used
+    #                                for city in state.cities for product in city.products) / len(state.products)
+    #     return self.state.products[0].production / self.state.products[0].land_used - average_productivity
 
     def self_sufficiency(self, state):
         newState = copy.deepcopy(state)
