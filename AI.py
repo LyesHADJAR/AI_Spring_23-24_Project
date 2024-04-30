@@ -2,9 +2,8 @@ import heapq
 
 
 class Product:
-    def __init__(self, name, land_used, production, Strategic, removable, productivity, Season):
+    def __init__(self, name, production, Strategic, removable, productivity, Season):
         self.name = name 
-        self.land_used = land_used
         self.production = production
         self.Strategic = Strategic
         self.productivity = productivity
@@ -13,10 +12,11 @@ class Product:
 
 
 class City:
-    def __init__(self, name, agriculture_land, unused_land, products):
+    def __init__(self, name, agriculture_land, unused_land, land_used, products):
         self.name = name
         self.agriculture_land = agriculture_land
         self.unused_land = unused_land
+        self.land_used = land_used
         self.products = sorted(products, key=lambda x: (x.production, x.prices))
 
 
