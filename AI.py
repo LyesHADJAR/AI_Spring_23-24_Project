@@ -2,13 +2,14 @@ import heapq
 
 
 class Product:
-    def __init__(self, name, prices, land_used, production, Strategic, productivity):
-        self.name = name
-        self.prices = prices  
+    def __init__(self, name, land_used, production, Strategic, removable, productivity, Season):
+        self.name = name 
         self.land_used = land_used
         self.production = production
         self.Strategic = Strategic
         self.productivity = productivity
+        self.Season = Season
+        self.removable = removable
 
 
 class City:
@@ -20,10 +21,11 @@ class City:
 
 
 class Country:
-    def __init__(self, cities, consumption , total_production):
+    def __init__(self, cities, consumption , total_production, prices):
         self.cities = cities
         self.consumption = consumption
         self.total_production = total_production
+        self.prices = prices
 
     def __repr__(self):
         return f"Country with cities: {[city.name for city in self.cities]}"
@@ -121,11 +123,11 @@ class GraphSearch:
 
 class AgricultureProblem:
     def __init__(
-        self, initial_state, Search_method, objective
+        self, initial_state, Search_method
     ):  # need to add goal state,transition model,path cost
         self.initial_state = initial_state
         self.Search_method = Search_method
-        self.objective = objective
+        
 
     def cost(self, state):
         total_land_used = sum(
@@ -205,8 +207,7 @@ class AgricultureProblem:
         actions = []
         for city in state.cities:
             for product in city.products:
-                #update actions
-                actions.append(("IncreaseProduction", city.name, product.name
+                actions.append(("IncreaseProduction", city.name, product.name))
 
     
     # This part is for Hill Climbing ( steapest ascent )
