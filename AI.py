@@ -137,7 +137,7 @@ class AgricultureProblem:
 
     def heuristic(self, state, products):  # products is a list of the season's products
         total_land_needed = 0
-
+    
         for product in products:
             for i in range(0, len(state.cities)):
                 if i == 0:
@@ -221,7 +221,14 @@ class AgricultureProblem:
     #     average_productivity = sum(city.products[product.name].production / city.products[product.name].land_used
     #                                for city in state.cities for product in city.products) / len(state.products)
     #     return self.state.products[0].production / self.state.products[0].land_used - average_productivity
-
+    def hill_climbing_heuristic(self, node, counters):
+      product = node.action[1]
+      if counters[product] > 0:
+        return node.state.total_production[product]
+      else:
+        return float(str('-inf'))
+    
+    
     def self_sufficiency(self, state):
       newState = copy.deepcopy(state)
       for product, total_production in state.total_production.items():
