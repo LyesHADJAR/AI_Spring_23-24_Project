@@ -232,3 +232,5 @@ class AgricultureProblem:
         average_productivity = sum(city.products[product.name].production / city.products[product.name].land_used
                                    for city in state.cities for product in city.products) / len(state.products)
         return self.state.products[0].production / self.state.products[0].land_used - average_productivity
+
+    
