@@ -199,8 +199,7 @@ class AgricultureProblem:
             for product in city.products:
                 #update actions
                 actions.append("IncreaseProduction", city.name, product.name)
-
-    
+    # This is Lyes code : to be tested
     # # This part is for Hill Climbing ( steapest ascent )
     # def Hill_Climbing(self, state):
     #     current_state = state
@@ -223,71 +222,63 @@ class AgricultureProblem:
     #                                for city in state.cities for product in city.products) / len(state.products)
     #     return self.state.products[0].production / self.state.products[0].land_used - average_productivity
 
-
-    
-
-
-def generate_second_goal(initial_state, goal_state):
-
-    new_goal = copy.goal_state
-    strategic = 0
-    non_strategic = 0
-    average_productivity = dict([])
-    ##we can create a function get productivity that return a dic containing the productivity of a specific product in each wilaya
-    for wilaya in initial_state.wilayas:
-        for Product in wilaya.Product:
-            if Product.strategic == True:
-                strategic += 1
-            else:
-                non_strategic += 1
-            average_productivity[Product.name] = (
-                average_productivity[Product.name]
-                + Product.production / Product.land_used
-            )  ##to review
-            average_productivity[Product.name] = average_productivity[
-                Product.name
-            ] + wilaya.get_productivity(
-                Product.name
-            )  ##to review
-
-    for key in average_productivity.keys():
-        average_productivity[key] = average_productivity[key] / 48  ##or 58
-
-    Total_unused_land = (
-        initial_state.get_Unused_land()
-    )  ##need to defind it in country class easy
-
-    number_of_products = len(average_productivity.keys())
-
-    additional_land_strategic = Total_unused_land * 0.6 / number_of_products
-    additional_land_non_strategic = Total_unused_land * 0.4 / number_of_products
-
-    Additional_production = dict([])
-
-    for key in average_productivity.keys():
-        if initial_state.wilayas.Product[key].strategic == True:
-            Additional_production[key] = (
-                average_productivity[key] * additional_land_strategic
-            )
-        else:
-            Additional_production[key] = (
-                average_productivity[key] * additional_land_non_strategic
-            )
-
-
-    for key in Additional_production.keys():
-        new_goal.update_Production(
-            key, Additional_production[key]
-        )  # needs to be definded ez
-
-
-
-
     def self_sufficiency(self, state):
-        newState = copy.deepcopy(state)
-        for product, total_production in state.total_production.items():
-            if total_production > state.consumption[product] * 1.17:
-              continue
-            else:
-              newState.total_production[product] = state.consumption[product] * 1.17
+      newState = copy.deepcopy(state)
+      for product, total_production in state.total_production.items():
+        if total_production > state.consumption[product] * 1.17:
+            continue
+        else:
+            newState.total_production[product] = state.consumption[product] * 1.17
         return newState
+   
+    def generate_goal(self, initial_state ):
+        new_goal = self.self_sufficiency(initial_state)
+        strategic = 0
+        non_strategic = 0
+        average_productivity = dict([])
+        ##we can create a function get productivity that return a dic containing the productivity of a specific product in each wilaya
+        for wilaya in initial_state.wilayas:
+            for Product in wilaya.Product:
+                if Product.strategic == True:
+                    strategic += 1
+                else:
+                    non_strategic += 1
+                average_productivity[Product.name] = (
+                    average_productivity[Product.name]
+                    + Product.production / Product.land_used
+                )  ##to review
+                average_productivity[Product.name] = average_productivity[
+                    Product.name
+                ] + wilaya.get_productivity(
+                    Product.name
+                )  ##to review
+
+        for key in average_productivity.keys():
+            average_productivity[key] = average_productivity[key] / 48  ##or 58
+
+        Total_unused_land = (
+            initial_state.get_Unused_land()
+        )  ##need to defind it in country class easy
+
+        number_of_products = len(average_productivity.keys())
+
+        additional_land_strategic = Total_unused_land * 0.6 / number_of_products
+        additional_land_non_strategic = Total_unused_land * 0.4 / number_of_products
+
+        Additional_production = dict([])
+
+        for key in average_productivity.keys():
+            if initial_state.wilayas.Product[key].strategic == True:
+                Additional_production[key] = (
+                    average_productivity[key] * additional_land_strategic
+                )
+            else:
+                Additional_production[key] = (
+                    average_productivity[key] * additional_land_non_strategic
+                )
+
+        for key in Additional_production.keys():
+            new_goal.update_Production(
+                key, Additional_production[key]
+            )  # needs to be definded ez
+
