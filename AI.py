@@ -1,5 +1,5 @@
 import heapq
-
+import copy
 
 class Product:
     def __init__(self, name, production, Strategic, removable, productivity, Season):
@@ -233,4 +233,11 @@ class AgricultureProblem:
                                    for city in state.cities for product in city.products) / len(state.products)
         return self.state.products[0].production / self.state.products[0].land_used - average_productivity
 
-    
+    def self_sufficiency(self, state):
+        newState = copy.deepcopy(state)
+        for product, total_production in state.total_production.items():
+            if total_production > state.consumption[product] * 1.17:
+              continue
+            else:
+              newState.total_production[product] = state.consumption[product] * 1.17
+        return newState
