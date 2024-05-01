@@ -30,6 +30,14 @@ class Country:
     def __repr__(self):
         return f"Country with cities: {[city.name for city in self.cities]}"
 
+   def update_production(self, product_name, additional_production):
+        for city in self.cities:
+            for product in city.products:
+                if product.name == product_name:
+                    product.production += additional_production
+                    self.total_production[product_name] += additional_production
+                    return
+
 
 class Node:
     def __init__(self, state, parent=None, action=None, cost=0, priority=0):
