@@ -243,8 +243,9 @@ class AgricultureProblem:
     #     return self.state.products[0].production / self.state.products[0].land_used - average_productivity
     def hill_climbing_heuristic(self, node, counters):
       product = node.action[1]
+      oldproduction=node.parent.state.total_prpduction[product]
       if counters[product] > 0:
-        return node.state.total_production[product]
+        return node.state.total_production[product]-oldproduction
       else:
         return float(str('-inf'))
     
