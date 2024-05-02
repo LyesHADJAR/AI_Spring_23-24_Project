@@ -188,10 +188,9 @@ class AgricultureProblem:
         additionalProduction = 10 # the constant to be fixed
         additionalLand = 10 # the constatn to be fixed
         newState.total_producton[action[1]] += additionalProduction
-                newState.cities[action[0]].product[action[1]].land_used+=additionalLand
+        newState.cities[action[0]].product[action[1]].land_used+=additionalLand
         newState.cities[action[0]].product[action[1]]. production+=additionalProduction
-        
-              newState.cities[action[0]].product[action[1]]. productivity=newState.cities[action[0]].product[action[1]].production/newState.cities[action[0]].product[action[1]].land_used
+        newState.cities[action[0]].product[action[1]]. productivity=newState.cities[action[0]].product[action[1]].production/newState.cities[action[0]].product[action[1]].land_used
         newState.land_used[action[1]] += additionalLand
         total_land_used = state.get_total_land_used(state) # To be added ez
         newNode = Node(newState, state, action,total_land_used, 0)
