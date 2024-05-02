@@ -204,7 +204,7 @@ class AgricultureProblem:
         
         
         total_land_used = state.get_total_land_used(state) # To be added ez
-        newNode = Node(newState, state, action,total_land_used, 0)
+        newNode = Node(newState, state, action, additionalLand, 0)
         newNode.priority = self.As_node_cost(newNode)
         return newNode 
 
