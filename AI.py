@@ -30,7 +30,7 @@ class Country:
     def __repr__(self):
         return f"Country with cities: {[city.name for city in self.cities]}"
 
-   def update_production(self, product_name, additional_production):
+    def update_production(self, product_name, additional_production):
         for city in self.cities:
             for product in city.products:
                 if product.name == product_name:
