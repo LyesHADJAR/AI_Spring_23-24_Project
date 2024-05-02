@@ -16,9 +16,8 @@ class City:
         self.name = name
         self.agriculture_land = agriculture_land
         self.unused_land = unused_land
-        self.land_used = land_used
+        self.land_used = land_used # dictionary ( product : land_used )
         self.products = products
-
 
 class Country:
     def __init__(self, cities, consumption , total_production, prices):
@@ -26,6 +25,13 @@ class Country:
         self.consumption = consumption
         self.total_production = total_production
         self.prices = prices
+    
+    def getTotalLandUsed(self):
+        total_land_used = 0
+        for city in self.cities:
+          for value in city.land_used.values():
+              total_land_used += value
+        return total_land_used
 
     def __repr__(self):
         return f"Country with cities: {[city.name for city in self.cities]}"
@@ -127,8 +133,6 @@ class GraphSearch:
             node = node.parent
         return list(reversed(path))
 
-
-
 class AgricultureProblem:
     def __init__(
         self, initial_state, Search_method
@@ -218,6 +222,7 @@ class AgricultureProblem:
             for product in city.products:
                 #update actions
                 actions.append("IncreaseProduction", city.name, product.name)
+                
     # This is Lyes code : to be tested
     # # This part is for Hill Climbing ( steapest ascent )
     # def Hill_Climbing(self, state):
@@ -240,6 +245,7 @@ class AgricultureProblem:
     #     average_productivity = sum(city.products[product.name].production / city.products[product.name].land_used
     #                                for city in state.cities for product in city.products) / len(state.products)
     #     return self.state.products[0].production / self.state.products[0].land_used - average_productivity
+    
     def hill_climbing_heuristic(self, node, counters):
       product = node.action[1]
       oldproduction=node.parent.state.total_prpduction[product]
