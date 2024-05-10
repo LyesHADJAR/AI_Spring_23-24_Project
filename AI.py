@@ -194,6 +194,8 @@ class AgricultureProblem:
         additionalProduction = 1000 # the constant to be fixed
         additionalLand = 0 # the constatn to be fixed
         productivity=newState.cities[action[0]].products[action[1]].production/newState.cities[action[0]].land_used[action[1]]
+        if productivity==0:
+            productivity=0.4
         additionalLand =additionalProduction/productivity
         if newState.cities[action[0]].unused_land>additionalLand:
             additionalLand=newState.cities[action[0]].unused_land
@@ -334,7 +336,7 @@ def main():
 
     # Create an AgricultureProblem and find the goal for a given season
     print("================================================")
-    problem = AgricultureProblem(country1, "UCS")
+    problem = AgricultureProblem(country1, "gjhgfgfjg")
     print("================================================")
     node = Node(country1, None, None, 0, 0)
     print(problem.result(node, ["City1", "Wheat"]).state.total_production)
