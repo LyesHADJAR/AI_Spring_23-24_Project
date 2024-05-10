@@ -197,21 +197,21 @@ class AgricultureProblem:
         if productivity==0:
             productivity=0.4
         additionalLand =additionalProduction/productivity
-        if newState.cities[action[0]].unused_land>additionalLand:
+        if newState.cities[action[0]].unused_land<=additionalLand:
             additionalLand=newState.cities[action[0]].unused_land
             additionalProduction=productivity*additionalLand
-    
         newState.total_production[action[1]] += additionalProduction
-        newState.cities[action[0]].land_used[action[1]]+=additionalLand
+
         newState.cities[action[0]].products[action[1]].production+=additionalProduction
         newState.cities[action[0]].products[action[1]].productivity=newState.cities[action[0]].products[action[1]].production/newState.cities[action[0]].land_used[action[1]]
         newState.cities[action[0]].unused_land=newState.cities[action[0]].unused_land-additionalLand
         newState.cities[action[0]].land_used[action[1]] += additionalLand
         #total_land_used = state.getTotalLandUsed(state) # To be added ez
+        print(newState.cities[action[0]].land_used[action[1]])
         newNode = Node(newState, state, action, additionalLand, 0)
         newNode.priority = self.As_node_cost(newNode)
         return newNode 
-
+  
     def goal_test(self, state):
         for product in state.total_production.keys():
             if state.total_production[product] < self.goal_state.total_production[product]:
@@ -333,13 +333,17 @@ def main():
     print("================================================")
     country1.update_production("Wheat", 100)
     print(country1.total_production)
+    print("land used : ",country1.getTotalLandUsed())
+    print("land unused : ",country1.getUnusedLand())
 
     # Create an AgricultureProblem and find the goal for a given season
     print("================================================")
     problem = AgricultureProblem(country1, "gjhgfgfjg")
     print("================================================")
     node = Node(country1, None, None, 0, 0)
-    print(problem.result(node, ["City1", "Wheat"]).state.total_production)
+    n= problem.result(node, ["City1", "Wheat"])
+    print("land used : ",n.state.getTotalLandUsed())
+    print("land unused : ",n.state.getUnusedLand())
     
 
 if __name__ == "__main__":
