@@ -1,0 +1,385 @@
+wilaya name,total land unused,product name,land used by product,production
+Adrar,520041,wheat,8571,283841
+Adrar,520041,corn,521,38786
+Adrar,520041,dates,28327,934562
+Adrar,520041,potatoes,355,53270
+Adrar,520041,tomatoes,1016,227618
+Adrar,520041,green pepper,13,3931
+Adrar,520041,aubergines,1,334
+Adrar,520041,other,0,0
+Chlef,14005,wheat,48079,436590
+Chlef,14005,corn,0,0
+Chlef,14005,dates,0,0
+Chlef,14005,potatoes,0,0
+Chlef,14005,tomatoes,0,0
+Chlef,14005,green pepper,0,0
+Chlef,14005,aubergines,0,0
+Chlef,14005,other,0,0
+Laghouat,0,wheat,100810,283841
+Laghouat,0,corn,0,0
+Laghouat,0,dates,282,15199
+Laghouat,0,potatoes,0,0
+Laghouat,0,tomatoes,0,0
+Laghouat,0,green pepper,0,0
+Laghouat,0,aubergines,0,0
+Laghouat,0,other,0,0
+Oum El Bouaghi,32172,wheat,8382,128699
+Oum El Bouaghi,32172,corn,29,1299
+Oum El Bouaghi,32172,dates,0,0
+Oum El Bouaghi,32172,potatoes,0,0
+Oum El Bouaghi,32172,tomatoes,0,0
+Oum El Bouaghi,32172,green pepper,0,0
+Oum El Bouaghi,32172,aubergines,0,0
+Oum El Bouaghi,32172,other,0,0
+Batna,83857,wheat,124891,708238
+Batna,83857,corn,0,0
+Batna,83857,dates,208,15891
+Batna,83857,potatoes,0,0
+Batna,83857,tomatoes,0,0
+Batna,83857,green pepper,0,0
+Batna,83857,aubergines,0,0
+Batna,83857,other,0,0
+Bejaia,3587,wheat,9813,93855
+Bejaia,3587,corn,6,600
+Bejaia,3587,dates,0,0
+Bejaia,3587,potatoes,44,7720
+Bejaia,3587,tomatoes,17,12971
+Bejaia,3587,green pepper,13,3828
+Bejaia,3587,aubergines,0,0
+Bejaia,3587,other,0,0
+Biskra,67532,wheat,33362,564759
+Biskra,67532,corn,0,0
+Biskra,67532,dates,43105,4284890
+Biskra,67532,potatoes,200,59340
+Biskra,67532,tomatoes,2253,3152760
+Biskra,67532,green pepper,895,589670
+Biskra,67532,aubergines,426,281537
+Biskra,67532,other,0,0
+Bechar,69834,wheat,359,5605
+Bechar,69834,corn,0,0
+Bechar,69834,dates,14074,269489
+Bechar,69834,potatoes,0,0
+Bechar,69834,tomatoes,0,0
+Bechar,69834,green pepper,0,0
+Bechar,69834,aubergines,0,0
+Bechar,69834,other,0,0
+Blida,1536,wheat,14945,173207
+Blida,1536,corn,0,0
+Blida,1536,dates,0,0
+Blida,1536,potatoes,0,0
+Blida,1536,tomatoes,57,20025
+Blida,1536,green pepper,10,2150
+Blida,1536,aubergines,3,1210
+Blida,1536,other,0,0
+Bouira,26904,wheat,103144,1021576
+Bouira,26904,corn,0,0
+Bouira,26904,dates,0,0
+Bouira,26904,potatoes,0,0
+Bouira,26904,tomatoes,0,0
+Bouira,26904,green pepper,0,0
+Bouira,26904,aubergines,0,0
+Bouira,26904,other,0,0
+Tamanrasset,53825,wheat,1248,13237
+Tamanrasset,53825,corn,0,0
+Tamanrasset,53825,dates,7003,122306
+Tamanrasset,53825,potatoes,0,0
+Tamanrasset,53825,tomatoes,8,6468
+Tamanrasset,53825,green pepper,2,647
+Tamanrasset,53825,aubergines,0,0
+Tamanrasset,53825,other,0,0
+Tebessa,72094,wheat,113400,221000
+Tebessa,72094,corn,0,0
+Tebessa,72094,dates,816,21300
+Tebessa,72094,potatoes,0,0
+Tebessa,72094,tomatoes,0,0
+Tebessa,72094,green pepper,0,0
+Tebessa,72094,aubergines,0,0
+Tebessa,72094,other,0,0
+Tlemcen,33025,wheat,111130,260000
+Tlemcen,33025,corn,0,0
+Tlemcen,33025,dates,0,0
+Tlemcen,33025,potatoes,85,21300
+Tlemcen,33025,tomatoes,40,10000
+Tlemcen,33025,green pepper,0,0
+Tlemcen,33025,aubergines,0,0
+Tlemcen,33025,other,0,0
+Tiaret,26950,wheat,290875,1462000
+Tiaret,26950,corn,0,0
+Tiaret,26950,dates,0,0
+Tiaret,26950,potatoes,0,0
+Tiaret,26950,tomatoes,0,0
+Tiaret,26950,green pepper,0,0
+Tiaret,26950,aubergines,0,0
+Tiaret,26950,other,0,0
+Tizi Ouzou,21859,wheat,10343,107100
+Tizi Ouzou,21859,corn,0,0
+Tizi Ouzou,21859,dates,0,0
+Tizi Ouzou,21859,potatoes,105,16980
+Tizi Ouzou,21859,tomatoes,2,0
+Tizi Ouzou,21859,green pepper,1,0
+Tizi Ouzou,21859,aubergines,0,0
+Tizi Ouzou,21859,other,0,0
+Alger,2522,wheat,3633,43085
+Alger,2522,corn,0,0
+Alger,2522,dates,0,0
+Alger,2522,potatoes,440,111930
+Alger,2522,tomatoes,130,65190
+Alger,2522,green pepper,23,5185
+Alger,2522,aubergines,8,1665
+Alger,2522,other,0,0
+Djelfa,0,wheat,22292,45730
+Djelfa,0,corn,0,0
+Djelfa,0,dates,101,7050
+Djelfa,0,potatoes,0,0
+Djelfa,0,tomatoes,0,0
+Djelfa,0,green pepper,0,0
+Djelfa,0,aubergines,0,0
+Djelfa,0,other,0,0
+Jijel,14511,wheat,1140,12823
+Jijel,14511,corn,53,6060
+Jijel,14511,dates,0,0
+Jijel,14511,potatoes,139,22635
+Jijel,14511,tomatoes,0,288
+Jijel,14511,green pepper,2,1626
+Jijel,14511,aubergines,25,5000
+Jijel,14511,other,0,0
+Setif,41084,wheat,275431,2336125
+Setif,41084,corn,0,0
+Setif,41084,dates,0,0
+Setif,41084,potatoes,0,0
+Setif,41084,tomatoes,0,0
+Setif,41084,green pepper,0,0
+Setif,41084,aubergines,0,0
+Setif,41084,other,0,0
+Saida,43479,wheat,116421,363813
+Saida,43479,corn,0,0
+Saida,43479,dates,0,0
+Saida,43479,potatoes,0,0
+Saida,43479,tomatoes,0,0
+Saida,43479,green pepper,0,0
+Saida,43479,aubergines,0,0
+Saida,43479,other,0,0
+Skikda,18323,wheat,59745,585900
+Skikda,18323,corn,80,4000
+Skikda,18323,dates,0,0
+Skikda,18323,potatoes,950,185250
+Skikda,18323,tomatoes,0,330
+Skikda,18323,green pepper,0,180
+Skikda,18323,aubergines,0,0
+Skikda,18323,other,0,0
+Sidi Bel Abbas,19636,wheat,162022,429030
+Sidi Bel Abbas,19636,corn,0,0
+Sidi Bel Abbas,19636,dates,0,0
+Sidi Bel Abbas,19636,potatoes,0,0
+Sidi Bel Abbas,19636,tomatoes,0,0
+Sidi Bel Abbas,19636,green pepper,0,0
+Sidi Bel Abbas,19636,aubergines,0,0
+Sidi Bel Abbas,19636,other,0,0
+Annaba,2786,wheat,25967,326770
+Annaba,2786,corn,0,0
+Annaba,2786,dates,0,0
+Annaba,2786,potatoes,0,0
+Annaba,2786,tomatoes,0,0
+Annaba,2786,green pepper,0,0
+Annaba,2786,aubergines,0,0
+Annaba,2786,other,0,0
+Guelma,26405,wheat,148752,1950545
+Guelma,26405,corn,0,0
+Guelma,26405,dates,0,0
+Guelma,26405,potatoes,0,0
+Guelma,26405,tomatoes,0,0
+Guelma,26405,green pepper,0,0
+Guelma,26405,aubergines,0,0
+Guelma,26405,other,0,0
+Constantine,0,wheat,127330,1671515
+Constantine,0,corn,0,0
+Constantine,0,dates,0,0
+Constantine,0,potatoes,0,0
+Constantine,0,tomatoes,0,0
+Constantine,0,green pepper,0,0
+Constantine,0,aubergines,0,0
+Constantine,0,other,0,0
+Medea,0,wheat,123807,674658
+Medea,0,corn,0,0
+Medea,0,dates,0,0
+Medea,0,potatoes,0,0
+Medea,0,tomatoes,0,0
+Medea,0,green pepper,0,0
+Medea,0,aubergines,0,0
+Medea,0,other,0,0
+Mostghanem,0,wheat,33443,200877
+Mostghanem,0,corn,0,0
+Mostghanem,0,dates,0,0
+Mostghanem,0,potatoes,549,79760
+Mostghanem,0,tomatoes,0,0
+Mostghanem,0,green pepper,0,0
+Mostghanem,0,aubergines,0,0
+Mostghanem,0,other,0,0
+M'sila,0,wheat,26700,132200
+M'sila,0,corn,0,0
+M'sila,0,dates,0,0
+M'sila,0,potatoes,0,0
+M'sila,0,tomatoes,88,96800
+M'sila,0,green pepper,15,13500
+M'sila,0,aubergines,5,3000
+M'sila,0,other,0,0
+Mascara,17054,wheat,119110,476950
+Mascara,17054,corn,0,0
+Mascara,17054,dates,0,0
+Mascara,17054,potatoes,0,0
+Mascara,17054,tomatoes,0,0
+Mascara,17054,green pepper,0,0
+Mascara,17054,aubergines,0,0
+Mascara,17054,other,0,0
+Ouargla,893799,wheat,1502,25858
+Ouargla,893799,corn,0,0
+Ouargla,893799,dates,22094,1416665
+Ouargla,893799,potatoes,3,650
+Ouargla,893799,tomatoes,47,18800
+Ouargla,893799,green pepper,2,715
+Ouargla,893799,aubergines,37,6529
+Ouargla,893799,other,0,0
+Oran,6507,wheat,18129,13219
+Oran,6507,corn,0,0
+Oran,6507,dates,0,0
+Oran,6507,potatoes,0,0
+Oran,6507,tomatoes,8,8320
+Oran,6507,green pepper,3,2650
+Oran,6507,aubergines,1,150
+Oran,6507,other,0,0
+El Bayadh,550,wheat,3761,12644
+El Bayadh,550,corn,118,8270
+El Bayadh,550,dates,477,12570
+El Bayadh,550,potatoes,0,0
+El Bayadh,550,tomatoes,0,0
+El Bayadh,550,green pepper,0,0
+El Bayadh,550,aubergines,0,0
+El Bayadh,550,other,0,0
+Illizi,3400,wheat,58,820
+Illizi,3400,corn,0,0
+Illizi,3400,dates,1254,15662
+Illizi,3400,potatoes,0,0
+Illizi,3400,tomatoes,1,457
+Illizi,3400,green pepper,0,7
+Illizi,3400,aubergines,0,14
+Illizi,3400,other,0,0
+Bordj Bou Arreridj,10556,wheat,138744,767317
+Bordj Bou Arreridj,10556,corn,0,0
+Bordj Bou Arreridj,10556,dates,0,0
+Bordj Bou Arreridj,10556,potatoes,0,0
+Bordj Bou Arreridj,10556,tomatoes,0,60
+Bordj Bou Arreridj,10556,green pepper,0,75
+Bordj Bou Arreridj,10556,aubergines,0,0
+Bordj Bou Arreridj,10556,other,0,0
+Boumerdas,20516,wheat,10410,130258
+Boumerdas,20516,corn,0,0
+Boumerdas,20516,dates,0,0
+Boumerdas,20516,potatoes,0,0
+Boumerdas,20516,tomatoes,2,1500
+Boumerdas,20516,green pepper,1,750
+Boumerdas,20516,aubergines,2,1400
+Boumerdas,20516,other,0,0
+El Tarf,1340,wheat,35010,454840
+El Tarf,1340,corn,0,0
+El Tarf,1340,dates,0,0
+El Tarf,1340,potatoes,105,31500
+El Tarf,1340,tomatoes,0,0
+El Tarf,1340,green pepper,0,0
+El Tarf,1340,aubergines,0,0
+El Tarf,1340,other,0,0
+Tindouf,1628,wheat,0,0
+Tindouf,1628,corn,0,0
+Tindouf,1628,dates,434,8800
+Tindouf,1628,potatoes,0,0
+Tindouf,1628,tomatoes,3,1500
+Tindouf,1628,green pepper,0,0
+Tindouf,1628,aubergines,0,0
+Tindouf,1628,other,0,0
+Tissemsilt,22297,wheat,84734,241540
+Tissemsilt,22297,corn,0,0
+Tissemsilt,22297,dates,0,0
+Tissemsilt,22297,potatoes,0,0
+Tissemsilt,22297,tomatoes,0,0
+Tissemsilt,22297,green pepper,0,0
+Tissemsilt,22297,aubergines,0,0
+Tissemsilt,22297,other,0,0
+El Oued,214600,wheat,20000,500000
+El Oued,214600,corn,0,0
+El Oued,214600,dates,37070,2533100
+El Oued,214600,potatoes,0,0
+El Oued,214600,tomatoes,70,70000
+El Oued,214600,green pepper,44,22000
+El Oued,214600,aubergines,1,672
+El Oued,214600,other,0,0
+Khenchela,75367,wheat,97540,699770
+Khenchela,75367,corn,0,0
+Khenchela,75367,dates,790,78000
+Khenchela,75367,potatoes,0,0
+Khenchela,75367,tomatoes,0,0
+Khenchela,75367,green pepper,0,0
+Khenchela,75367,aubergines,0,0
+Khenchela,75367,other,0,0
+Souk Ahras,3506,wheat,203166,1625846
+Souk Ahras,3506,corn,0,0
+Souk Ahras,3506,dates,0,0
+Souk Ahras,3506,potatoes,0,0
+Souk Ahras,3506,tomatoes,0,0
+Souk Ahras,3506,green pepper,0,0
+Souk Ahras,3506,aubergines,0,0
+Souk Ahras,3506,other,0,0
+Tipaza,0,wheat,30759,398807
+Tipaza,0,corn,0,0
+Tipaza,0,dates,0,0
+Tipaza,0,potatoes,842,190050
+Tipaza,0,tomatoes,386,365600
+Tipaza,0,green pepper,126,53344
+Tipaza,0,aubergines,26,9050
+Tipaza,0,other,0,0
+Mila,16444,wheat,163462,2089149
+Mila,16444,corn,0,0
+Mila,16444,dates,0,0
+Mila,16444,potatoes,0,0
+Mila,16444,tomatoes,0,0
+Mila,16444,green pepper,0,0
+Mila,16444,aubergines,0,0
+Mila,16444,other,0,0
+Ain Defla,14054,wheat,108763,1074520
+Ain Defla,14054,corn,10,500
+Ain Defla,14054,dates,0,0
+Ain Defla,14054,potatoes,0,0
+Ain Defla,14054,tomatoes,0,0
+Ain Defla,14054,green pepper,0,0
+Ain Defla,14054,aubergines,0,0
+Ain Defla,14054,other,0,0
+Naama,60,wheat,233,1706
+Naama,60,corn,0,0
+Naama,60,dates,236,10372
+Naama,60,potatoes,0,0
+Naama,60,tomatoes,0,0
+Naama,60,green pepper,0,0
+Naama,60,aubergines,0,0
+Naama,60,other,0,0
+Ain Temouchent,15296,wheat,84535,204600
+Ain Temouchent,15296,corn,0,0
+Ain Temouchent,15296,dates,0,0
+Ain Temouchent,15296,potatoes,42,11820
+Ain Temouchent,15296,tomatoes,59,26550
+Ain Temouchent,15296,green pepper,2,1200
+Ain Temouchent,15296,aubergines,2,640
+Ain Temouchent,15296,other,0,0
+Ghardaia,172,wheat,5798,130927
+Ghardaia,172,corn,0,0
+Ghardaia,172,dates,11009,571000
+Ghardaia,172,potatoes,0,0
+Ghardaia,172,tomatoes,3,1200
+Ghardaia,172,green pepper,1,200
+Ghardaia,172,aubergines,0,0
+Ghardaia,172,other,0,0
+Gheliziane,9450,wheat,122650,162387
+Gheliziane,9450,corn,0,0
+Gheliziane,9450,dates,0,0
+Gheliziane,9450,potatoes,0,0
+Gheliziane,9450,tomatoes,0,0
+Gheliziane,9450,green pepper,0,0
+Gheliziane,9450,aubergines,0,0
+Gheliziane,9450,other,0,0

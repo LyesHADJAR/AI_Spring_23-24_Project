@@ -1,0 +1,8 @@
+product name,summer season,fall season,winter season,spring season,removable in summer,removable in fall,removable in winter,removable in spring,strategic,consumption,summer price,fall price,winter price,spring price
+wheat,0,1,0,1,1,0,0,0,1,10500000,2500,2500,2500,2500
+corn,0,1,1,0,1,0,0,0,0,3759000,4500,4500,4500,4500
+dates,1,1,1,1,0,0,0,0,1,600000,390,400,470,590
+potatoes,0,1,1,0,1,0,0,0,1,494937,100,100,48,77
+tomatoes,1,1,0,0,0,0,0,1,1,1380000,50,80,100,65
+green pepper,0,1,0,0,1,0,0,1,0,1000,50,70,150,130
+aubergines,1,0,0,0,0,0,1,1,0,2600,60,80,150,130
