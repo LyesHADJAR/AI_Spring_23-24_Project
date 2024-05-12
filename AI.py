@@ -2,10 +2,8 @@ import heapq
 import copy
 import csv
 
-#heyyyyyyyy
-
 class Product:
-    def __init__(self, name = "", production = 0, Strategic = False, removable = False, productivity = 0, Season = []):
+    def __init__(self, name, production, Strategic, removable, productivity, Season):
         self.name = name #string
         self.production = production # int
         self.Strategic = Strategic # boolean
@@ -15,18 +13,20 @@ class Product:
 
 
 class City:
-    def __init__(self, name = "", unused_land = 0, land_used = {}, products = {}):
+    def __init__(self, name, unused_land, land_used, products):
         self.name = name #string
         self.unused_land = unused_land # total (int)
         self.land_used = land_used # dictionary ( product : land_used )
         self.products = products # dictionary ( product : Product )
 class Country:
-    def __init__(self, cities = {}, consumption = {}, total_production = {}, prices = {}):
+    def __init__(self, cities, consumption , total_production, prices):
         self.cities = cities # dictionary ( city : City )
         self.consumption = consumption # dictionary ( product : consumption )
         self.total_production = total_production # dictionary ( product : total_production )
         self.prices = prices # dictionary ( product : list of prices each season )
-    
+    def add(self,citi,value):
+        print(type(citi))
+        self.total_production[citi]+=value
     def getTotalLandUsed(self):
         total_land_used = 0
         for city in self.cities.values():
@@ -51,7 +51,7 @@ class Country:
 
 
 class Node:
-    def __init__(self, state, parent = None, action = None, cost = 0, priority = 0):
+    def __init__(self, state, parent=None, action=None, cost=0, priority=0):
         self.state = state
         self.parent = parent
         self.action = action
@@ -61,7 +61,8 @@ class Node:
             self.depth = 0
         else:
             self.depth = parent.depth + 1
-
+    def __gt__(self, other):
+        return self.priority>other.priority
 
 class PriorityQueue:
     def __init__(self):
@@ -75,7 +76,8 @@ class PriorityQueue:
 
     def get(self):
         return heapq.heappop(self.elements)[1]
-
+    def lenght(self):
+        return len(self.elements)
 class GraphSearch:
     def __init__(self, problem, strategy):
         self.problem = problem
@@ -93,7 +95,7 @@ class GraphSearch:
             depth = 0 
 
         while not frontier.empty():
-            node = frontier.get()
+            node = copy.deepcopy(frontier.get())
 
             if self.strategy == "steepest":
                 current_node = node
@@ -107,9 +109,10 @@ class GraphSearch:
                     return self.get_path(node)
 
             explored.add(node.state)
-
+            #print(len(explored))
+            #print(frontier.lenght())
             for action in self.problem.actions(node.state):
-                child_node = self.problem.result(node, action)
+                child_node = copy.deepcopy(self.problem.result(node, action))
                 if child_node.state not in explored:
                     frontier.put(child_node, child_node.priority)
 
@@ -165,7 +168,7 @@ class AgricultureProblem:
                 else:
                     temp = (
                         state.cities[value].land_used[product]
-                        / state.cities[value].products[product].production
+                        / max(state.cities[value].products[product].production,1)
                     )
                     if temp < productivity:
                         productivity = temp
@@ -174,7 +177,7 @@ class AgricultureProblem:
                 - state.total_production[product]
             )
             # need to define member total_production and its update functions (easy)
-          total_land_needed += production_needed / productivity
+          total_land_needed += production_needed / max(productivity,1)
 
         return total_land_needed
 
@@ -194,34 +197,43 @@ class AgricultureProblem:
    
     def result(self, state, action):
         newState = copy.deepcopy(state.state)
+        if action[1]=="other":
+            return  Node(copy.deepcopy(newState), state, action, 0, 0)
         additionalProduction = 1000 # the constant to be fixed
         additionalLand = 0 # the constatn to be fixed
-        productivity=newState.cities[action[0]].products[action[1]].production/newState.cities[action[0]].land_used[action[1]]
+        productivity=newState.cities[action[0]].products[action[1]].production/max(newState.cities[action[0]].land_used[action[1]],1)
         if productivity==0:
             productivity=0.4
         additionalLand =additionalProduction/productivity
         if newState.cities[action[0]].unused_land<=additionalLand:
             additionalLand=newState.cities[action[0]].unused_land
             additionalProduction=productivity*additionalLand
-        newState.total_production[action[1]] += additionalProduction
+        print("===========================")
+        print(newState.total_production[action[1]])   
+        print(action[1])
 
-        newState.cities[action[0]].products[action[1]].production+=additionalProduction
-        newState.cities[action[0]].products[action[1]].productivity=newState.cities[action[0]].products[action[1]].production/newState.cities[action[0]].land_used[action[1]]
+        
+        newState.add(action[1],additionalProduction) 
+        print(newState.total_production[action[1]])
+        print("===========================")
+        newState.cities[action[0]].products[action[1]].production=newState.cities[action[0]].products[action[1]].production+additionalProduction
+        newState.cities[action[0]].products[action[1]].productivity=newState.cities[action[0]].products[action[1]].production/max(1,newState.cities[action[0]].land_used[action[1]])
         newState.cities[action[0]].unused_land=newState.cities[action[0]].unused_land-additionalLand
         newState.cities[action[0]].land_used[action[1]] += additionalLand
         #total_land_used = state.getTotalLandUsed(state) # To be added ez
-        print(newState.cities[action[0]].land_used[action[1]])
-        newNode = Node(newState, state, action, additionalLand, 0)
+        #print(newState.cities[action[0]].land_used[action[1]])
+        newNode = Node(copy.deepcopy(newState), state, action, additionalLand, 0)
         newNode.priority = self.As_node_cost(newNode)
-        return newNode 
-  
+        print(newNode.state.total_production)
+        return newNode
+
     def goal_test(self, state):
         for product in state.total_production.keys():
             if state.total_production[product] < self.goal_state.total_production[product]:
                 return False
         return True
                 
-                    
+
     def As_node_cost(self, node):
         heuristic_cost = self.heuristic(node.state)
         if self.Search_method == "IDA_star":
@@ -237,7 +249,7 @@ class AgricultureProblem:
         actions = []
         for city in state.cities.keys():
             for product in state.cities[city].products.keys():
-                actions.append(city, product)
+                actions.append([city, product])
                 
         return actions
       
@@ -281,7 +293,7 @@ class AgricultureProblem:
                     non_strategic += 1
                 average_productivity[Product.name] = (
                     average_productivity[Product.name]
-                    + Product.production / City.land_used[Product.name]
+                    + Product.production / max(City.land_used[Product.name],1)
                 )  ##to review
 
         for key in average_productivity.keys():
@@ -313,8 +325,6 @@ class AgricultureProblem:
                 
         for key in Additional_production.keys():
             new_goal.update_production(key, Additional_production[key])  # needs to be definded ez
-        for key, value in new_goal.total_production.items():
-            print(key," : ", value)
         return new_goal
 
 class DataLoader:
@@ -325,7 +335,7 @@ class DataLoader:
         consumption = {}
         total_production = {}
         prices = {}
-
+        temp={}
         # Load city data
        # Load product data
         with open(product_filename, newline='') as product_file:
@@ -342,6 +352,19 @@ class DataLoader:
                     float(product_row['spring price'])
                 ]
         
+        with open(product_filename, newline='') as product_file:
+                    product_reader = csv.DictReader(product_file)
+                    for product_row in product_reader:
+                        product_name=product_row['product name']
+                        season = [product_row['summer season'], product_row['fall season'], product_row['winter season'], product_row['spring season']]
+                        removable = [product_row['removable in summer'], product_row['removable in fall'], product_row['removable in winter'], product_row['removable in spring']]
+                        strategic = bool(product_row['strategic'])
+                        temp[product_name]={}
+                        temp[product_name] = {
+                            'strategic': strategic,
+                            'removable': removable,
+                            'season': season
+                        }
         # Iterate over city data
         with open(city_filename, newline='') as city_file:
             city_reader = csv.DictReader(city_file)
@@ -361,18 +384,7 @@ class DataLoader:
                 }
 
                 # Iterate over product data and update city data accordingly
-                with open(product_filename, newline='') as product_file:
-                    product_reader = csv.DictReader(product_file)
-                    for product_row in product_reader:
-                        season = [product_row['summer season'], product_row['fall season'], product_row['winter season'], product_row['spring season']]
-                        if '0' in [product_row['removable in summer'], product_row['removable in fall'], product_row['removable in winter'], product_row['removable in spring']]:
-                            unused_land += land_used_by_product
-                        
-                        cities[city_name]['products'][product_name] = {
-                            'strategic': strategic,
-                            'removable': removable,
-                            'season': season
-                        }
+                
         with open(city_filename,newline='') as city_file:
             city_reader=csv.DictReader(city_file)
             for city_row in city_reader:
@@ -381,10 +393,13 @@ class DataLoader:
                 land_used_by_product=int(city_row['land used by product'])
                 product_name=city_row['product name']
                 productivity = production / land_used_by_product if land_used_by_product > 0 else 0
-                cities[city_name]['products'][product_name] = {
+                cities[city_name]['products'][product_name]=  {
                             'land used by product': land_used_by_product,
                             'production': production,
-                            'productivity': productivity
+                            'productivity': productivity,
+                            'strategic':temp[product_name]['strategic'],
+                            'removable': temp[product_name]['removable'],
+                            'season': temp[product_name]['season']
                         }
 
         return cities, consumption, total_production, prices
@@ -425,12 +440,32 @@ class DataLoader:
 #     main()
 
 
+def mycountry(cities_data, consumption, prices):
+    productss={}
+    landused={}
+    total_production={}
+    citis={}
+    for cities in cities_data.keys():    
+        for products in cities_data[cities]['products'].keys():
+            if products not in total_production.keys():
+                total_production[products]=0
+            total_production[products]+=cities_data[cities]['products'][products]['production']
+            myprod=Product(products,cities_data[cities]['products'][products]['production'],cities_data[cities]['products'][products]['strategic'],cities_data[cities]['products'][products]['removable'],cities_data[cities]['products'][products]['productivity'],cities_data[cities]['products'][products]['season'])
+            productss[products]=copy.deepcopy(myprod)
+            landused[products]=cities_data[cities]['products'][products]['land used by product']
+        myciti=City(cities,cities_data[cities]['unused_land'],landused,copy.deepcopy(productss))
+        citis[cities]=copy.deepcopy(myciti)
+        landused.clear()
+        productss.clear()
+    
+    mycontri=Country(citis,consumption,total_production,prices)
+    return mycontri
+
 def main():
     # Load data using DataLoader
     cities_data, consumption, total_production, prices = DataLoader.load_country_data("Wilaya.csv", "products.csv")
-
+    country=mycountry(cities_data, consumption,  prices)
     # Create an instance of Country
-    country = Country(cities_data, consumption, total_production, prices)
 
     # Create an instance of AgricultureProblem
     problem = AgricultureProblem(country, "UCS")
