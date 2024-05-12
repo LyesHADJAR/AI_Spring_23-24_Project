@@ -2,6 +2,8 @@ import heapq
 import copy
 import csv
 
+#heyyyyyyyy
+
 class Product:
     def __init__(self, name, production, Strategic, removable, productivity, Season):
         self.name = name #string
@@ -219,7 +221,7 @@ class AgricultureProblem:
                 return False
         return True
                 
-
+                    
     def As_node_cost(self, node):
         heuristic_cost = self.heuristic(node.state)
         if self.Search_method == "IDA_star":
