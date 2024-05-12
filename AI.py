@@ -220,7 +220,7 @@ class AgricultureProblem:
                 return False
         return True
                 
-
+                    
     def As_node_cost(self, node):
         heuristic_cost = self.heuristic(node.state)
         if self.Search_method == "IDA_star":
