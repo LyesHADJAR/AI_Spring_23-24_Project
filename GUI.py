@@ -1,4 +1,3 @@
-import tkinter as tk
 import customtkinter as ctk
 from tkinter import filedialog, messagebox
 from AI import DataLoader, Country, AgricultureProblem, GraphSearch
@@ -41,7 +40,7 @@ wilaya_button = ctk.CTkButton(root, text="Upload Wilaya File", command=lambda: u
 
 # Create dropdown menu
 search_methods = ["UCS", "IDS", "A*"]  # Add your search methods here
-search_dropdown = tk.OptionMenu(root, search_method, *search_methods)
+search_dropdown = ctk.CTkOptionMenu(root, search_method, *search_methods)
 search_method.set(search_methods[0])  # Set default search method
 
 # Create run button
