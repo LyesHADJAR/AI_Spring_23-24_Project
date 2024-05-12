@@ -1,6 +1,8 @@
 import heapq
 import copy
 
+#heyyyyyyyy
+
 class Product:
     def __init__(self, name, production, Strategic, removable, productivity, Season):
         self.name = name #string
