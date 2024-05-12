@@ -1,6 +1,6 @@
 import tkinter as tk
-from tkinter import ttk, filedialog, messagebox
-from ttkthemes import ThemedTk
+import customtkinter as ctk
+from tkinter import filedialog, messagebox
 from AI import DataLoader, Country, AgricultureProblem, GraphSearch
 
 def upload_file(file_var):
@@ -26,35 +26,29 @@ def run_algorithm(products_file, wilaya_file, search_method, output_var):
     # Output the result
     output_var.set(result)
 
-root = ThemedTk(theme="arc")  # Use the "arc" theme
+root = ctk.CTk()  # Use the CTk class from CustomTkinter
 root.title("Agricultural Optimization Project")  # Set window title
 
-# Create a style
-style = ttk.Style()
-
-# Configure a larger button size
-style.configure('TButton', font=('Arial', 20), padding=20)
-
 # Create variables
-products_file = tk.StringVar()
-wilaya_file = tk.StringVar()
-search_method = tk.StringVar()
-output_var = tk.StringVar()
+products_file = ctk.StringVar()
+wilaya_file = ctk.StringVar()
+search_method = ctk.StringVar()
+output_var = ctk.StringVar()
 
-# Create file upload buttons with larger font and padding
-products_button = ttk.Button(root, text="Upload Products File", command=lambda: upload_file(products_file), style='TButton')
-wilaya_button = ttk.Button(root, text="Upload Wilaya File", command=lambda: upload_file(wilaya_file), style='TButton')
+# Create file upload buttons
+products_button = ctk.CTkButton(root, text="Upload Products File", command=lambda: upload_file(products_file))
+wilaya_button = ctk.CTkButton(root, text="Upload Wilaya File", command=lambda: upload_file(wilaya_file))
 
-# Create dropdown menu with larger font
+# Create dropdown menu
 search_methods = ["UCS", "IDS", "A*"]  # Add your search methods here
-search_dropdown = ttk.OptionMenu(root, search_method, *search_methods)
+search_dropdown = tk.OptionMenu(root, search_method, *search_methods)
 search_method.set(search_methods[0])  # Set default search method
 
-# Create run button with larger font and padding
-run_button = ttk.Button(root, text="Run", command=lambda: run_algorithm(products_file, wilaya_file, search_method, output_var), style='TButton')
+# Create run button
+run_button = ctk.CTkButton(root, text="Run", command=lambda: run_algorithm(products_file, wilaya_file, search_method, output_var))
 
-# Create output label with larger font
-output_label = ttk.Label(root, textvariable=output_var)
+# Create output label
+output_label = ctk.CTkLabel(root, textvariable=output_var)
 
 # Layout widgets
 products_button.pack(pady=10)
