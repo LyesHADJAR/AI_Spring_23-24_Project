@@ -74,11 +74,11 @@ class DataLoader:
 
 def main():
     cities_data, consumption, total_production, prices = DataLoader.load_country_data("Wilaya.csv", "products.csv")
-    print(cities_data['Adrar']['products'])
-    print("WALOU")
+    print(cities_data.keys())
+    print("==================")
     print(consumption)
     print(total_production)
-    print("WALOU")
+    print("==================")
     print(prices)
 
 if __name__ == "__main__":
