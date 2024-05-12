@@ -5,7 +5,7 @@ import csv
 #heyyyyyyyy
 
 class Product:
-    def __init__(self, name, production, Strategic, removable, productivity, Season):
+    def __init__(self, name = "", production = 0, Strategic = False, removable = False, productivity = 0, Season = []):
         self.name = name #string
         self.production = production # int
         self.Strategic = Strategic # boolean
@@ -15,13 +15,13 @@ class Product:
 
 
 class City:
-    def __init__(self, name, unused_land, land_used, products):
+    def __init__(self, name = "", unused_land = 0, land_used = {}, products = {}):
         self.name = name #string
         self.unused_land = unused_land # total (int)
         self.land_used = land_used # dictionary ( product : land_used )
         self.products = products # dictionary ( product : Product )
 class Country:
-    def __init__(self, cities, consumption , total_production, prices):
+    def __init__(self, cities = {}, consumption = {}, total_production = {}, prices = {}):
         self.cities = cities # dictionary ( city : City )
         self.consumption = consumption # dictionary ( product : consumption )
         self.total_production = total_production # dictionary ( product : total_production )
@@ -51,7 +51,7 @@ class Country:
 
 
 class Node:
-    def __init__(self, state, parent=None, action=None, cost=0, priority=0):
+    def __init__(self, state, parent = None, action = None, cost = 0, priority = 0):
         self.state = state
         self.parent = parent
         self.action = action
