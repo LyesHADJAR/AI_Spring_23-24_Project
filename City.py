@@ -4,4 +4,3 @@ class City:
         self.unused_land = unused_land  # total (int)
         self.land_used = land_used  # dictionary ( product : land_used )
         self.products = products  # dictionary ( product : Product )
-
