@@ -1,3 +1,14 @@
+# File imports
+import AgricultureProblem
+import City
+import Country
+# import DataLoader
+import GraphSearch
+import ProblemGUI
+import Product
+
+# Utility imports
+import copy
 import csv
 
 class DataLoader:
@@ -75,3 +86,48 @@ class DataLoader:
                         }
 
         return cities, consumption, total_production, prices
+
+
+def mycountry(cities_data, consumption, prices):
+    productss = {}
+    landused = {}
+    total_production = {}
+    citis = {}
+    for cities in cities_data.keys():    
+        for products in cities_data[cities]['products'].keys():
+            if products not in total_production.keys():
+                total_production[products]=0
+            total_production[products] += cities_data[cities]['products'][products]['production']
+            myprod = Product.Product(products,cities_data[cities]['products'][products]['production'],cities_data[cities]['products'][products]['strategic'],cities_data[cities]['products'][products]['removable'],cities_data[cities]['products'][products]['productivity'],cities_data[cities]['products'][products]['season'])
+            productss[products] = copy.deepcopy(myprod)
+            landused[products] = cities_data[cities]['products'][products]['land used by product']
+        myciti = City.City(cities,cities_data[cities]['unused_land'],landused,copy.deepcopy(productss))
+        citis[cities] = copy.deepcopy(myciti)
+        landused.clear()
+        productss.clear()
+    
+    mycontri = Country.Country(citis,consumption,total_production,prices)
+    return mycontri
+
+def main():
+    # Load data using DataLoader
+    cities_data, consumption, total_production, prices = DataLoader.load_country_data("Wilaya.csv", "products.csv")
+    
+    # Create an instance of Country
+    country = mycountry(cities_data, consumption,  prices)
+
+    # Create an instance of AgricultureProblem
+    problem = AgricultureProblem.AgricultureProblem(country, "UCS")
+
+    # Create an instance of GraphSearch
+    search = GraphSearch.GraphSearch(problem, "UCS")
+
+    # Perform the search
+    result = search.general_search()
+
+    # Print the result
+    print(result)
+
+if __name__ == "__main__":
+    main()
+

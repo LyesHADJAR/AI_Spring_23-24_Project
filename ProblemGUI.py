@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 
-from AI import DataLoader, Country, AgricultureProblem, GraphSearch
+from main import DataLoader, Country, AgricultureProblem, GraphSearch
 
 def upload_file(file_var, label_var):
     filename = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
