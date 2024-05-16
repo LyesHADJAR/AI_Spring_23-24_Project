@@ -1,6 +1,7 @@
 import heapq
 import copy
 import csv
+import random
 
 
 class Product:
@@ -56,8 +57,7 @@ class Country:
             for products in self.total_production.keys():
                 if (
                     self.cities[city].land_used[products]
-                    != object.cities[city].land_used[products]
-                ):
+                    != object.cities[city].land_used[products]):
                     return False
         return True
 
@@ -122,6 +122,30 @@ class stack:
             print(self.elements[i])
 
 
+class queue:
+    def __init__(self):
+        self.elements = []
+    def clear(self):
+        self.elements.clear()
+    def get(self):
+        if not self.empty():
+            item = self.elements[0]
+            self.elements.pop(0)
+            return item
+
+    def put(self, item,val):
+        self.elements.append(item)
+
+    def empty(self):
+        return len(self.elements) == 0
+
+    def print(self):
+        for i in range(0, len(self.elements)):
+            print(self.elements[i])
+
+
+
+
 class GraphSearch:
     def __init__(self, problem, strategy):
         self.problem = problem
@@ -138,39 +162,65 @@ class GraphSearch:
         elif self.strategy == "IDS":
             depth = 0
             frontier=stack()
-            
+        elif self.strategy == "BFS":
+            depth = 0
+            frontier=queue() 
         frontier.put(initial_node, 0)  
+        i = 0
 
         while not frontier.empty():
+            
             # print((frontier).lenght())
-            print(len(frontier.elements))
+            #print(len(frontier.elements))
+           #print(len(frontier.elements))
             node = copy.deepcopy(frontier.get())
-            # print((frontier).lenght())
-            i = 0
-            print("parent")
-            print(node.state.total_production["wheat"])
+            #print(node)
+            print("==================")
+            print("unused needed=")
+        
+            print(node.state.getTotalLandUsed())
+            print(node.state.getUnusedLand())
+            print("==================")
+            
+            #print("unused land is:")
+            #print(node.state.getUnusedLand())  
+            #print("heuristic is ")
+            #print(node.priority)
+            #if i<2:
+            #             print("-----------------")
+            #             print(node.state.total_production)  
+            #             i+=1
+            #print((frontier).lenght())
+            #print("parent")
+            #print(node.state.total_production["wheat"])
             if self.strategy == "steepest":
                 current_node = node
                 best_neighbor = self.problem.get_best_neighbor(current_node)
-                if not  best_neighbor==current_node:
-                    print(best_neighbor.state.total_production['wheat'])
-                    print(best_neighbor.state.total_production['corn'])
-                          
+                if  best_neighbor!=None:
+    
                     frontier.put(best_neighbor, best_neighbor.priority)
                 else:
                     return node
             else:
                 if self.problem.goal_test(node.state):
                     return self.get_path(node)
-
+                
+                    
                 explored.add(node.state)
-            # print(len(frontier))
+                # print(len(frontier.elements))
                 for action in self.problem.actions(node.state):
-
+                    
                     child_node = copy.deepcopy(self.problem.result(node, action))
-
+                    #if i<2 and child_node!=None:
+                    #     print("-----------------")
+                    #     print("child")
+                    #     print(child_node.state.total_production) 
+                    #     print(child_node.state.getUnusedLand())
+                    #     i+=1
+                    if child_node ==None:
+                        continue
                     if child_node.state not in explored:
-                        frontier.put(child_node, child_node.priority)
+                        frontier.put(copy.deepcopy(child_node), child_node.priority)
 
                     if self.strategy == "IDA_star":
                         if child_node.priority > threshold:
@@ -182,7 +232,6 @@ class GraphSearch:
                         if node.depth > depth:
                             frontier.clear()
                             frontier.put(initial_node, 0)
-                            print(len(frontier.elements))
                             depth += 1
                             continue
 
@@ -208,11 +257,9 @@ class AgricultureProblem:
         for prod in self.products:
             self.counters[prod]=5
         self.goal_state = self.generate_goal(self.initial_state)
-        print(self.goal_state.total_production["wheat"])
-        print("Goal")
 
     def cost(self, state):
-        return state.getTotalLandUsed()
+        return state.getTotalLandUsed()-self.initial_state.getTotalLandUsed()
 
     def heuristic(self, state):  # products is a list of the season's products
         total_land_needed = 0
@@ -222,15 +269,19 @@ class AgricultureProblem:
             for value in state.cities.keys():
                 if i == 0:
                     productivity = (
-                        state.cities[value].land_used[product]
-                        / state.cities[value].products[product].production
+                        
+                         state.cities[value].products[product].production/max(state.cities[value].land_used[product],1000)
                     )
+                    if productivity==0:
+                        while productivity==0:
+                            productivity=random.uniform(1,15)
                     i += 1
                 else:
-                    temp = state.cities[value].land_used[product] / max(
-                        state.cities[value].products[product].production, 1
+                    temp = (
+                        
+                         state.cities[value].products[product].production/max(state.cities[value].land_used[product],1000)
                     )
-                    if temp < productivity:
+                    if temp > productivity and temp!=0:
                         productivity = temp
             production_needed = max(
                 0,
@@ -243,30 +294,77 @@ class AgricultureProblem:
         return total_land_needed
 
     def get_best_neighbor(self, node):
-        best_neighbor = node
+        if node.state.getUnusedLand()==0:
+            return None  
+        best_neighbor = None
         best_value = float("-inf")
         action = None
-        for action in self.actions(node.state):
-            child_state = self.result(node, action)
+        for action in self.actionsh(node.state,self.counters):
+            child_state = self.resulth(node, action)
             child_value = self.hill_climbing_heuristic(child_state, self.counters)
             if child_value > best_value:
-                best_neighbor = child_state
+                best_neighbor = copy.deepcopy(child_state)
                 best_value = child_value
-        print('product is:')
-        print(best_neighbor.action[1])
-        self.counters[best_neighbor.action[1]]-=1
         return best_neighbor
 
     def result(self, state, action):
+        if state.state.getUnusedLand()==0:
+            return None  
         newState = copy.deepcopy(state.state)
         neededprod = (
             self.goal_state.total_production[action[1]]
-            - self.initial_state.total_production[action[1]]
+        )
+
+        additionalProduction = max(0.9 * max(0, neededprod),100000)  # the constant to be fixed
+        additionalLand = 0  # the constatn to be fixed
+        productivity = newState.cities[action[0]].products[action[1]].production / max(
+            newState.cities[action[0]].land_used[action[1]], 1
+        )
+        if productivity == 0:
+            while productivity==0:
+                productivity =random.uniform(1, 15)
+        additionalLand = additionalProduction / productivity
+        if newState.cities[action[0]].unused_land <= additionalLand and newState.cities[action[0]].unused_land!=0 :
+            additionalLand = newState.cities[action[0]].unused_land
+            additionalProduction = productivity * additionalLand
+        else:
+            return None
+        # print("===========================")
+        # print(newState.total_production[action[1]])
+        # print(action[1])
+
+        newState.add(action[1], additionalProduction)
+        # print(newState.total_production[action[1]])
+        # print("===========================")
+        newState.cities[action[0]].products[action[1]].production = (
+            newState.cities[action[0]].products[action[1]].production
+            + additionalProduction
+        )
+        newState.cities[action[0]].products[action[1]].productivity = newState.cities[
+            action[0]
+        ].products[action[1]].production / max(
+            1, newState.cities[action[0]].land_used[action[1]]
+        )
+        newState.cities[action[0]].unused_land = max((
+            newState.cities[action[0]].unused_land - additionalLand
+        ),0)
+        newState.cities[action[0]].land_used[action[1]] += additionalLand
+        # total_land_used = state.getTotalLandUsed(state) # To be added ez
+        # print(newState.cities[action[0]].land_used[action[1]])
+        newNode = Node((newState), state, action, additionalLand, 0)
+        newNode.priority = self.As_node_cost(newNode)
+
+        # print(newNode.state.total_production)
+        return newNode
+    def resulth(self, state, action):  
+        newState = copy.deepcopy(state.state)
+        neededprod = (
+            self.goal_state.total_production[action[1]]
         )
         if action[1] == "other":
             return Node(copy.deepcopy(newState), state, action, 0, 0)
 
-        additionalProduction = max(0.1 * max(0, neededprod),10000)  # the constant to be fixed
+        additionalProduction =max( (neededprod*4*0.3),300000) 
         additionalLand = 0  # the constatn to be fixed
         productivity = newState.cities[action[0]].products[action[1]].production / max(
             newState.cities[action[0]].land_used[action[1]], 1
@@ -274,7 +372,7 @@ class AgricultureProblem:
         if productivity == 0:
             productivity = 0.4
         additionalLand = additionalProduction / productivity
-        if newState.cities[action[0]].unused_land <= additionalLand:
+        if newState.cities[action[0]].unused_land < additionalLand:
             additionalLand = newState.cities[action[0]].unused_land
             additionalProduction = productivity * additionalLand
         # print("===========================")
@@ -294,7 +392,7 @@ class AgricultureProblem:
             1, newState.cities[action[0]].land_used[action[1]]
         )
         newState.cities[action[0]].unused_land = (
-            newState.cities[action[0]].unused_land - additionalLand
+           max(( newState.cities[action[0]].unused_land - additionalLand),0)
         )
         newState.cities[action[0]].land_used[action[1]] += additionalLand
         # total_land_used = state.getTotalLandUsed(state) # To be added ez
@@ -303,7 +401,6 @@ class AgricultureProblem:
         newNode.priority = self.As_node_cost(newNode)
         # print(newNode.state.total_production)
         return newNode
-
     def goal_test(self, state):
         for product in self.products:
             if (
@@ -311,11 +408,7 @@ class AgricultureProblem:
                 < self.goal_state.total_production[product]
                 and product != "other"
             ):
-                print("jkk")
-                print(product)
-                print(state.total_production[product])
-                print(self.goal_state.total_production[product])
-                print("jkk")
+
                 return False
         print("true")
         return True
@@ -337,27 +430,40 @@ class AgricultureProblem:
                 if (
                     state.total_production[product]
                     < self.goal_state.total_production[product]
-                ):
+                )and state.cities[city].unused_land!=0:
 
                     actions.append([city, product])
 
         return actions
-
-    def hill_climbing_heuristic(self, node, counters):
+    
+    def actionsh(self, state,counters):
+        actions = []
         empty = 0
         for Counter in counters:
-            if Counter == 0:
+            if counters[Counter] == 0:
                 empty += 1
-        if empty == len(counters.keys()):
+        if empty == len(list(counters.keys())):
             for Counter in counters:
                 counters[Counter] = 5
+        for city in state.cities.keys():
+            for product in self.products:
 
+                    if counters[product] == 0 or state.cities[city].unused_land==0:
+                        continue
+                    else:
+                        actions.append([city, product])
+
+        return actions
+
+    def hill_climbing_heuristic(self, node, counters):
         product = node.action[1]
         oldproduction = node.parent.state.total_production[product]
         if counters[product] > 0:
-            return node.state.total_production[product] - oldproduction
+                return node.state.total_production[product] - oldproduction
         else:
-            return float(str("-inf"))
+                return float(("-inf"))
+        
+        
 
     def self_sufficiency(self, state):
         newState = copy.deepcopy(state)
@@ -371,8 +477,7 @@ class AgricultureProblem:
         return newState
 
     def generate_goal(self, initial_state):
-        print("Goal")
-        print(initial_state.total_production["wheat"])
+
         new_goal = self.self_sufficiency(initial_state)
         # new_goal =copy.deepcopy( self.initial_state)
 
@@ -428,7 +533,7 @@ class AgricultureProblem:
             new_goal.update_production(
                 key, Additional_production[key]
             )  # needs to be definded ez
-        new_goal.total_production["wheat"]=initial_state.total_production["wheat"]+1000
+            
         return new_goal
 
 
@@ -595,6 +700,159 @@ def mycountry(cities_data, consumption, prices):
     return mycontri
 
 
+def search_for_year( initial_state,strategy):
+    summer_prod=[]
+    winter_prod=[]
+    fall_prod=[]
+    spring_prod=[]
+    s_removable=[]
+    w_removable=[]
+    f_removable=[]
+    sp_removable=[0,0,0,0]
+    
+    #make the goal:
+    
+    problem = AgricultureProblem(initial_state, strategy,list(initial_state.total_production.keys()))
+    goal=copy.deepcopy(problem.goal_state)
+    for prod in initial_state.total_production.keys():
+        neededprod=goal.total_production[prod]
+        count=0
+        for i in range(4):
+            if int(initial_state.cities[list(initial_state.cities.keys())[0]].products[prod].removable[i])==1 and prod!='other':
+                if i==0:
+                   s_removable.append(prod)
+                elif i==1:
+                   w_removable.append(prod)
+                elif i==2:
+                   f_removable.append(prod)
+                elif i==3:
+                   sp_removable.append(prod)
+
+            if  initial_state.cities[list(initial_state.cities.keys())[0]].products[prod].Season[i]=='1' and 'other':
+                count+=1
+                if i==0:
+                   summer_prod.append(prod)
+                elif i==1:
+                   winter_prod.append(prod)
+                elif i==2:
+                   fall_prod.append(prod)
+                elif i==3:
+                   spring_prod.append(prod)
+                count+=1
+        
+        goal.total_production[prod]=initial_state.total_production[prod]+\
+        \
+        neededprod/(
+            count   
+        )
+    problem.goal_state=goal
+
+        
+
+
+
+# make initial state Summer    
+
+    new_initial_state=copy.deepcopy(initial_state)
+
+
+    #get seasons products
+    for prod in new_initial_state.total_production.keys():
+        if prod in s_removable:
+            for city in new_initial_state.cities.keys():
+                new_initial_state.cities[city].unused_land+=new_initial_state.cities[city].land_used[prod]
+                new_initial_state.cities[city].land_used[prod]=0
+                new_initial_state.cities[city].products[prod].production=0
+                
+    
+    
+    
+    
+    
+    v=0
+    for prod in goal.total_production.keys():
+        v+=goal.total_production[prod]-new_initial_state.total_production[prod]
+    print('production needed in summer')
+    print(v)
+    problem.products=summer_prod
+    search = GraphSearch(problem, strategy)
+    result = search.general_search()
+    print("plan for summer")
+    print(result)
+    
+    
+    #for winter
+    new_initial_state=copy.deepcopy(initial_state)
+
+
+    #get seasons products
+    for prod in new_initial_state.total_production.keys():
+        if prod in w_removable:
+            for city in new_initial_state.cities:
+                new_initial_state.cities[city].unused_land+=new_initial_state.cities[city].land_used[prod]
+                new_initial_state.cities[city].land_used[prod]=0
+                new_initial_state.cities[city].products[prod].production=0
+                
+    
+    
+    
+    
+    
+    problem.products=winter_prod
+    search = GraphSearch(problem, strategy)
+    result = search.general_search()
+    print("plan for winter")
+    print(result)
+    
+    #for fall
+    new_initial_state=copy.deepcopy(initial_state)
+
+
+    #get seasons products
+    for prod in new_initial_state.total_production.keys():
+        if prod in f_removable:
+            for city in new_initial_state.cities:
+                new_initial_state.cities[city].unused_land+=new_initial_state.cities[city].land_used[prod]
+                new_initial_state.cities[city].land_used[prod]=0
+                new_initial_state.cities[city].products[prod].production=0
+                
+    
+    
+    
+    
+    
+    problem.products=fall_prod
+    search = GraphSearch(problem, strategy)
+    print(f_removable)
+    result = search.general_search()
+    print("plan for fall")
+    print(result)
+
+
+
+    #for spring
+    new_initial_state=copy.deepcopy(initial_state)
+
+
+    #get seasons products
+    for prod in new_initial_state.total_production.keys():
+        if prod in s_removable:
+            for city in new_initial_state.cities:
+                new_initial_state.cities[city].unused_land+=new_initial_state.cities[city].land_used[prod]
+                new_initial_state.cities[city].land_used[prod]=0
+                new_initial_state.cities[city].products[prod].production=0
+                
+    
+    
+    
+    
+    
+    problem.products=spring_prod
+    search = GraphSearch(problem, strategy)
+    result = search.general_search()
+    print("plan for spring")
+    print(result)
+
 def main():
     myproducts = [
         "wheat",
@@ -613,21 +871,21 @@ def main():
     cities_data, consumption, total_production, prices = DataLoader.load_country_data(
         "Wilaya.csv", "products.csv"
     )
+    
     country = mycountry(cities_data, consumption, prices)
     # Create an instance of Country
 
     # Create an instance of AgricultureProblem
-    problem = AgricultureProblem(country, "UCS", myproducts1)
+    
 
     # Create an instance of GraphSearch
-    search = GraphSearch(problem, "UCS")
-
+    
     # Perform the search
-    result = search.general_search()
+
 
     # Print the result
-    print(result)
 
+    search_for_year(country,"steepest")
 
 if __name__ == "__main__":
     main()
