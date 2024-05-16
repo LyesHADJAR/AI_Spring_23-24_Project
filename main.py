@@ -212,13 +212,6 @@ def main():
     search_for_year(country, "IDS")
     end_of_IDS = time.time()
     print(f"Time taken for IDS: {end_of_IDS - start_of_IDS} seconds")
-
-    start_of_UCS = time.time()  
-    print("------------------------------------------")
-    print("search using UCS")
-    search_for_year(country, "UCS")
-    end_of_UCS = time.time()
-    print(f"Time taken for UCS: {end_of_UCS - start_of_UCS} seconds")
     
     start_of_HC = time.time()
     print("------------------------------------------")
@@ -226,6 +219,14 @@ def main():
     search_for_year(country, "steepest")
     end_of_HC = time.time()
     print(f"Time taken for Hill Climbing: {end_of_HC - start_of_HC} seconds")
+    
+    start_of_UCS = time.time()  
+    print("------------------------------------------")
+    print("search using UCS")
+    search_for_year(country, "UCS")
+    end_of_UCS = time.time()
+    print(f"Time taken for UCS: {end_of_UCS - start_of_UCS} seconds")
+
 
 if __name__ == "__main__":
     main()

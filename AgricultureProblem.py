@@ -124,7 +124,7 @@ class AgricultureProblem:
             self.goal_state.total_production[action[1]]
         )
         if action[1] == "other":
-            return Node(copy.deepcopy(newState), state, action, 0, 0)
+            return Node.Node(copy.deepcopy(newState), state, action, 0, 0)
 
         additionalProduction = max((neededprod*4*0.3), 300000)
         additionalLand = 0  # the constatn to be fixed
@@ -159,7 +159,7 @@ class AgricultureProblem:
         newState.cities[action[0]].land_used[action[1]] += additionalLand
         # total_land_used = state.getTotalLandUsed(state) # To be added ez
         # print(newState.cities[action[0]].land_used[action[1]])
-        newNode = Node(copy.deepcopy(newState), state,
+        newNode = Node.Node(copy.deepcopy(newState), state,
                        action, additionalLand, 0)
         newNode.priority = self.As_node_cost(newNode)
         # print(newNode.state.total_production)
