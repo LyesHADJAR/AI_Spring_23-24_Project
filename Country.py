@@ -5,7 +5,8 @@ class Country:
         self.total_production = (
             total_production  # dictionary ( product : total_production )
         )
-        self.prices = prices  # dictionary ( product : list of prices each season )
+        # dictionary ( product : list of prices each season )
+        self.prices = prices
 
     def add(self, citi, value):
         self.total_production[citi] += value
@@ -32,8 +33,8 @@ class Country:
         for city in self.cities.keys():
             for products in self.total_production.keys():
                 if (
-                    self.cities[city].land_used[products]
-                    != object.cities[city].land_used[products]):
+                        self.cities[city].land_used[products]
+                        != object.cities[city].land_used[products]):
                     return False
         return True
 
@@ -42,3 +43,16 @@ class Country:
         for products in self.total_production.keys():
             hashval += hash(products) * self.total_production[products]
         return int(hashval)
+
+    # def __str__(self):
+    #     cities_details = "\n".join(
+    #         f"{city_name}: {city}" for city_name, city in self.cities.items()
+    #     )
+    #     total_production_details = "\n".join(
+    #         f"{product}: {quantity}" for product, quantity in self.total_production.items()
+    #     )
+    #     return (
+    #         f"Cities: {cities_details}\n"
+    #         f"Total Production: {total_production_details}"
+    #     )
+    

@@ -1,5 +1,6 @@
 import heapq
 
+
 class PriorityQueue:
     def __init__(self):
         self.elements = []
@@ -20,14 +21,16 @@ class PriorityQueue:
 class stack:
     def __init__(self):
         self.elements = []
+
     def clear(self):
         self.elements.clear()
+
     def get(self):
         item = self.elements[len(self.elements) - 1]
         self.elements.pop(len(self.elements) - 1)
         return item
 
-    def put(self, item,val):
+    def put(self, item, val):
         self.elements.append(item)
 
     def empty(self):
@@ -41,15 +44,17 @@ class stack:
 class queue:
     def __init__(self):
         self.elements = []
+
     def clear(self):
         self.elements.clear()
+
     def get(self):
         if not self.empty():
             item = self.elements[0]
             self.elements.pop(0)
             return item
 
-    def put(self, item,val):
+    def put(self, item, val):
         self.elements.append(item)
 
     def empty(self):
