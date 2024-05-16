@@ -9,5 +9,6 @@ class Node:
             self.depth = 0
         else:
             self.depth = parent.depth + 1
+
     def __gt__(self, other):
-        return self.priority>other.priority
+        return self.priority > other.priority
