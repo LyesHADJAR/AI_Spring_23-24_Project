@@ -8,7 +8,7 @@ class GraphSearch:
         self.strategy = strategy
 
     def general_search(self):
-        initial_node = Node(self.problem.initial_state)
+        initial_node = Node.Node(self.problem.initial_state)
         explored = set()
         
         frontier = PriorityQueue()

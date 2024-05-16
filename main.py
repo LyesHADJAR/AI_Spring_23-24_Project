@@ -2,7 +2,7 @@
 import AgricultureProblem
 import City
 import Country
-import DataLoader
+from DataLoader import DataLoader
 import GraphSearch
 import ProblemGUI
 import Product
@@ -23,7 +23,7 @@ def mycountry(cities_data, consumption, prices):
             total_production[products] += cities_data[cities]["products"][products][
                 "production"
             ]
-            myprod = Product(
+            myprod = Product.Product(
                 products,
                 cities_data[cities]["products"][products]["production"],
                 cities_data[cities]["products"][products]["strategic"],
@@ -35,7 +35,7 @@ def mycountry(cities_data, consumption, prices):
             landused[products] = cities_data[cities]["products"][products][
                 "land used by product"
             ]
-        myciti = City(
+        myciti = City.City(
             cities,
             cities_data[cities]["unused_land"],
             landused,
@@ -45,7 +45,7 @@ def mycountry(cities_data, consumption, prices):
         landused.clear()
         productss.clear()
 
-    mycontri = Country(citis, consumption, total_production, prices)
+    mycontri = Country.Country(citis, consumption, total_production, prices)
     return mycontri
 
 
@@ -61,7 +61,7 @@ def search_for_year( initial_state,strategy):
     
     #make the goal:
     
-    problem = AgricultureProblem(initial_state, strategy,list(initial_state.total_production.keys()))
+    problem = AgricultureProblem.AgricultureProblem(initial_state, strategy,list(initial_state.total_production.keys()))
     goal=copy.deepcopy(problem.goal_state)
     for prod in initial_state.total_production.keys():
         neededprod=goal.total_production[prod]
@@ -126,7 +126,7 @@ def search_for_year( initial_state,strategy):
     problem.products=summer_prod
     problem.initial_state=new_initial_state
     
-    search = GraphSearch(problem, strategy)
+    search = GraphSearch.GraphSearch(problem, strategy)
     result = search.general_search()
     print("plan for summer")
     print(result)
@@ -150,7 +150,7 @@ def search_for_year( initial_state,strategy):
     
     problem.initial_state=new_initial_state
     problem.products=winter_prod
-    search = GraphSearch(problem, strategy)
+    search = GraphSearch.GraphSearch(problem, strategy)
     result = search.general_search()
     print("plan for winter")
     print(result)
@@ -175,7 +175,7 @@ def search_for_year( initial_state,strategy):
     problem.products=fall_prod
     problem.initial_state=new_initial_state
     
-    search = GraphSearch(problem, strategy)
+    search = GraphSearch.GraphSearch(problem, strategy)
     print(f_removable)
     result = search.general_search()
     print("plan for fall")
@@ -203,7 +203,7 @@ def search_for_year( initial_state,strategy):
     problem.products=spring_prod
     problem.initial_state=new_initial_state
     
-    search = GraphSearch(problem, strategy)
+    search = GraphSearch.GraphSearch(problem, strategy)
     result = search.general_search()
     print("plan for spring")
     print(result)
@@ -223,9 +223,7 @@ def main():
     ]
     myproducts2 = ["aubergines"]
     # Load data using DataLoader
-    cities_data, consumption, total_production, prices = DataLoader.load_country_data(
-        "Wilaya.csv", "products.csv"
-    )
+    cities_data, consumption, total_production, prices = DataLoader.load_country_data("Wilaya.csv", "products.csv")
     
     country = mycountry(cities_data, consumption, prices)
     # Create an instance of Country

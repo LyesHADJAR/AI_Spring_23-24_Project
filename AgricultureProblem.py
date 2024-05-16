@@ -107,7 +107,7 @@ class AgricultureProblem:
         newState.cities[action[0]].land_used[action[1]] += additionalLand
         # total_land_used = state.getTotalLandUsed(state) # To be added ez
         # print(newState.cities[action[0]].land_used[action[1]])
-        newNode = Node((newState), state, action, additionalLand, 0)
+        newNode = Node.Node((newState), state, action, additionalLand, 0)
         newNode.priority = self.As_node_cost(newNode)
 
         # print(newNode.state.total_production)
