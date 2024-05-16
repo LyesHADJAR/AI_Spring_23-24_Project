@@ -1,5 +1,4 @@
 import csv
-
 class DataLoader:
     @staticmethod
     def load_country_data(city_filename, product_filename):
