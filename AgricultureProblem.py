@@ -74,12 +74,12 @@ class AgricultureProblem:
             additionalProduction=productivity*additionalLand
             
         print("===========================")
-        # print(newState.total_production[action[1]])
-        # print(action[1])
+        print(newState.total_production[action[1]])
+        print(action[1])
 
         newState.add(action[1],additionalProduction)
         
-        # print(newState.total_production[action[1]])
+        print(newState.total_production[action[1]])
         print("===========================")
         
         newState.cities[action[0]].products[action[1]].production=newState.cities[action[0]].products[action[1]].production+additionalProduction
@@ -87,7 +87,7 @@ class AgricultureProblem:
         newState.cities[action[0]].unused_land=newState.cities[action[0]].unused_land-additionalLand
         newState.cities[action[0]].land_used[action[1]] += additionalLand
         #total_land_used = state.getTotalLandUsed(state) # To be added ez
-        #print(newState.cities[action[0]].land_used[action[1]])
+        print(newState.cities[action[0]].land_used[action[1]])
         newNode = Node.Node(copy.deepcopy(newState), state, action, additionalLand, 0)
         newNode.priority = self.As_node_cost(newNode)
         print(newNode.state.total_production)

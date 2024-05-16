@@ -9,6 +9,7 @@ import Product
 
 # Utility imports
 import copy
+import random
 import csv
 
 class DataLoader:
@@ -130,4 +131,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
