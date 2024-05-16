@@ -60,25 +60,28 @@ class AgricultureProblem:
    
     def result(self, state, action):
         newState = copy.deepcopy(state.state)
-        if action[1]=="other":
+        if action[1] == "other":
             return  Node.Node(copy.deepcopy(newState), state, action, 0, 0)
-        additionalProduction = 1000 # the constant to be fixed
+        additionalProduction = 10000 # the constant to be fixed
         additionalLand = 0 # the constatn to be fixed
-        productivity=newState.cities[action[0]].products[action[1]].production/max(newState.cities[action[0]].land_used[action[1]],1)
-        if productivity==0:
-            productivity=0.4
+        productivity = newState.cities[action[0]].products[action[1]].production/max(newState.cities[action[0]].land_used[action[1]],1)
+        if productivity == 0:
+            productivity = 0.4
+            
         additionalLand =additionalProduction/productivity
-        if newState.cities[action[0]].unused_land<=additionalLand:
+        if newState.cities[action[0]].unused_land <= additionalLand:
             additionalLand=newState.cities[action[0]].unused_land
             additionalProduction=productivity*additionalLand
+            
         print("===========================")
-        print(newState.total_production[action[1]])   
-        print(action[1])
+        # print(newState.total_production[action[1]])
+        # print(action[1])
 
+        newState.add(action[1],additionalProduction)
         
-        newState.add(action[1],additionalProduction) 
-        print(newState.total_production[action[1]])
+        # print(newState.total_production[action[1]])
         print("===========================")
+        
         newState.cities[action[0]].products[action[1]].production=newState.cities[action[0]].products[action[1]].production+additionalProduction
         newState.cities[action[0]].products[action[1]].productivity=newState.cities[action[0]].products[action[1]].production/max(1,newState.cities[action[0]].land_used[action[1]])
         newState.cities[action[0]].unused_land=newState.cities[action[0]].unused_land-additionalLand

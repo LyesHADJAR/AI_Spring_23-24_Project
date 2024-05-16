@@ -5,7 +5,7 @@ class Country:
         self.total_production = total_production # dictionary ( product : total_production )
         self.prices = prices # dictionary ( product : list of prices each season )
     def add(self,citi,value):
-        print(type(citi))
+        # print(type(citi))
         self.total_production[citi]+=value
     def getTotalLandUsed(self):
         total_land_used = 0
