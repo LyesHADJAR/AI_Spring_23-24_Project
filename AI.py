@@ -203,7 +203,7 @@ class GraphSearch:
                     return node
             else:
                 if self.problem.goal_test(node.state):
-                    return self.get_path(node)
+                    return (node)
                 
                     
                 explored.add(node.state)
@@ -775,6 +775,8 @@ def search_for_year( initial_state,strategy):
     print('production needed in summer')
     print(v)
     problem.products=summer_prod
+    problem.initial_state=new_initial_state
+    
     search = GraphSearch(problem, strategy)
     result = search.general_search()
     print("plan for summer")
@@ -782,7 +784,7 @@ def search_for_year( initial_state,strategy):
     
     
     #for winter
-    new_initial_state=copy.deepcopy(initial_state)
+    new_initial_state=copy.deepcopy(result.state)
 
 
     #get seasons products
@@ -797,7 +799,7 @@ def search_for_year( initial_state,strategy):
     
     
     
-    
+    problem.initial_state=new_initial_state
     problem.products=winter_prod
     search = GraphSearch(problem, strategy)
     result = search.general_search()
@@ -805,7 +807,7 @@ def search_for_year( initial_state,strategy):
     print(result)
     
     #for fall
-    new_initial_state=copy.deepcopy(initial_state)
+    new_initial_state=copy.deepcopy(result.state)
 
 
     #get seasons products
@@ -822,6 +824,8 @@ def search_for_year( initial_state,strategy):
     
     
     problem.products=fall_prod
+    problem.initial_state=new_initial_state
+    
     search = GraphSearch(problem, strategy)
     print(f_removable)
     result = search.general_search()
@@ -831,7 +835,7 @@ def search_for_year( initial_state,strategy):
 
 
     #for spring
-    new_initial_state=copy.deepcopy(initial_state)
+    new_initial_state=copy.deepcopy(result.state)
 
 
     #get seasons products
@@ -848,6 +852,8 @@ def search_for_year( initial_state,strategy):
     
     
     problem.products=spring_prod
+    problem.initial_state=new_initial_state
+    
     search = GraphSearch(problem, strategy)
     result = search.general_search()
     print("plan for spring")
@@ -885,7 +891,7 @@ def main():
 
     # Print the result
 
-    search_for_year(country,"steepest")
+    search_for_year(country,"IDA_Star")
 
 if __name__ == "__main__":
     main()
