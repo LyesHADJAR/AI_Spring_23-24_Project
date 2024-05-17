@@ -2,7 +2,7 @@ import heapq
 import copy
 import csv
 import random
-
+import markdown
 
 class Product:
     def __init__(self, name, production, Strategic, removable, productivity, Season):
@@ -34,6 +34,15 @@ class Country:
     def add(self, citi, value):
         self.total_production[citi] += value
 
+
+    def to_markdown(self):
+        markdown_text = "| City | Product | Land Used | Production |\n"
+        markdown_text += "| --- | --- | --- | --- |\n"
+        for city in self.cities.values():
+            for product in city.products.values():
+                if product.name=='':
+                    markdown_text += f"| {city.name} | {product.name} | {city.land_used[product.name]} | {product.production} |\n"
+        return markdown_text
     def getTotalLandUsed(self):
         total_land_used = 0
         for city in self.cities.values():
@@ -315,7 +324,7 @@ class AgricultureProblem:
             self.goal_state.total_production[action[1]]
         )
 
-        additionalProduction = max(0.9 * max(0, neededprod),100000)  # the constant to be fixed
+        additionalProduction = max(0.3 * max(0, neededprod),100000)  # the constant to be fixed
         additionalLand = 0  # the constatn to be fixed
         productivity = newState.cities[action[0]].products[action[1]].production / max(
             newState.cities[action[0]].land_used[action[1]], 1
@@ -364,7 +373,7 @@ class AgricultureProblem:
         if action[1] == "other":
             return Node(copy.deepcopy(newState), state, action, 0, 0)
 
-        additionalProduction =max( (neededprod*4*0.3),300000) 
+        additionalProduction =max( (neededprod*2*0.25),100000) 
         additionalLand = 0  # the constatn to be fixed
         productivity = newState.cities[action[0]].products[action[1]].production / max(
             newState.cities[action[0]].land_used[action[1]], 1
@@ -721,36 +730,36 @@ def search_for_year( initial_state,strategy):
             if int(initial_state.cities[list(initial_state.cities.keys())[0]].products[prod].removable[i])==1 and prod!='other':
                 if i==0:
                    s_removable.append(prod)
-                elif i==1:
-                   w_removable.append(prod)
                 elif i==2:
+                   w_removable.append(prod)
+                elif i==1:
                    f_removable.append(prod)
                 elif i==3:
                    sp_removable.append(prod)
 
             if  initial_state.cities[list(initial_state.cities.keys())[0]].products[prod].Season[i]=='1' and 'other':
-                count+=1
                 if i==0:
                    summer_prod.append(prod)
-                elif i==1:
-                   winter_prod.append(prod)
                 elif i==2:
+                   winter_prod.append(prod)
+                elif i==1:
                    fall_prod.append(prod)
                 elif i==3:
                    spring_prod.append(prod)
                 count+=1
-        
-        goal.total_production[prod]=initial_state.total_production[prod]+\
-        \
-        neededprod/(
-            count   
-        )
+        if prod=='wheat':
+            print(count)
+        goal.total_production[prod]=goal.total_production[prod]/max(1,count)
     problem.goal_state=goal
+    print("goal of season aubergines")
+    #print(s_removable)
+    #print(w_removable)
+    #print(fall_prod)
+    #print(spring_prod)
+    print(goal.total_production['aubergines'])
+    print('======================')
 
         
-
-
-
 # make initial state Summer    
 
     new_initial_state=copy.deepcopy(initial_state)
@@ -763,49 +772,26 @@ def search_for_year( initial_state,strategy):
                 new_initial_state.cities[city].unused_land+=new_initial_state.cities[city].land_used[prod]
                 new_initial_state.cities[city].land_used[prod]=0
                 new_initial_state.cities[city].products[prod].production=0
+                new_initial_state.total_production[prod]=0
                 
     
     
     
     
-    
-    v=0
-    for prod in goal.total_production.keys():
-        v+=goal.total_production[prod]-new_initial_state.total_production[prod]
-    print('production needed in summer')
-    print(v)
+    print("================================")
+    print(new_initial_state.total_production['wheat'])
+    print("================================")
+
     problem.products=summer_prod
     problem.initial_state=new_initial_state
     
     search = GraphSearch(problem, strategy)
     result = search.general_search()
     print("plan for summer")
-    print(result)
+    print(result.state.to_markdown())
+    print("==============================")
     
-    
-    #for winter
-    new_initial_state=copy.deepcopy(result.state)
-
-
-    #get seasons products
-    for prod in new_initial_state.total_production.keys():
-        if prod in w_removable:
-            for city in new_initial_state.cities:
-                new_initial_state.cities[city].unused_land+=new_initial_state.cities[city].land_used[prod]
-                new_initial_state.cities[city].land_used[prod]=0
-                new_initial_state.cities[city].products[prod].production=0
-                
-    
-    
-    
-    
-    problem.initial_state=new_initial_state
-    problem.products=winter_prod
-    search = GraphSearch(problem, strategy)
-    result = search.general_search()
-    print("plan for winter")
-    print(result)
-    
+   
     #for fall
     new_initial_state=copy.deepcopy(result.state)
 
@@ -817,23 +803,53 @@ def search_for_year( initial_state,strategy):
                 new_initial_state.cities[city].unused_land+=new_initial_state.cities[city].land_used[prod]
                 new_initial_state.cities[city].land_used[prod]=0
                 new_initial_state.cities[city].products[prod].production=0
-                
+                new_initial_state.total_production[prod]=0
     
     
     
-    
+    print("================================")
+    print(new_initial_state.total_production['wheat'])
+    print("================================")
+
     
     problem.products=fall_prod
-    problem.initial_state=new_initial_state
+    problem.initial_state=copy.deepcopy(new_initial_state)
     
     search = GraphSearch(problem, strategy)
     print(f_removable)
     result = search.general_search()
     print("plan for fall")
-    print(result)
+    print(result.state.to_markdown())
 
 
 
+
+
+
+
+ #for winter
+    new_initial_state=copy.deepcopy(result.state)
+
+
+    #get seasons products
+    for prod in new_initial_state.total_production.keys():
+        if prod in w_removable:
+            for city in new_initial_state.cities:
+                new_initial_state.cities[city].unused_land+=new_initial_state.cities[city].land_used[prod]
+                new_initial_state.cities[city].land_used[prod]=0
+                new_initial_state.cities[city].products[prod].production=0
+                new_initial_state.total_production[prod]=0
+    
+    
+    
+    
+    problem.initial_state=copy.deepcopy(new_initial_state)
+    problem.products=winter_prod
+    search = GraphSearch(problem, strategy)
+    result = search.general_search()
+    #print("plan for winter")
+    #print(result.state.to_markdown())
+    
     #for spring
     new_initial_state=copy.deepcopy(result.state)
 
@@ -845,19 +861,22 @@ def search_for_year( initial_state,strategy):
                 new_initial_state.cities[city].unused_land+=new_initial_state.cities[city].land_used[prod]
                 new_initial_state.cities[city].land_used[prod]=0
                 new_initial_state.cities[city].products[prod].production=0
-                
+                new_initial_state.total_production[prod]=0
     
     
     
-    
+    print("================================")
+    print(new_initial_state.total_production['wheat'])
+    print("================================")
+
     
     problem.products=spring_prod
-    problem.initial_state=new_initial_state
+    problem.initial_state=copy.deepcopy(new_initial_state)
     
     search = GraphSearch(problem, strategy)
     result = search.general_search()
     print("plan for spring")
-    print(result)
+    print(result.state.to_markdown())
 
 def main():
     myproducts = [
@@ -891,7 +910,7 @@ def main():
 
     # Print the result
 
-    search_for_year(country,"IDA_Star")
+    search_for_year(country,"UCS")
 
 if __name__ == "__main__":
     main()
