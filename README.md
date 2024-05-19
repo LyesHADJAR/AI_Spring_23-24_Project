@@ -1,39 +1,65 @@
-# AI_Spring_23-24_Project : Agricultural land production planning
+# Agriculture Problem Solver
 
-## Overview 
-This is an implementation of many search algorithms that were delt with during the course of Introducton to AI - Spring 2023/24
+## Overview
+This project is an application of various search algorithms to solve an agriculture problem. The primary focus is to optimize the organization of agricultural production in Algeria.
 
-## Project Aim :
-Organise the agricultural production in Algeria so as to optimize various objectives.
+## Objective
+The aim is to optimize various aspects of agricultural production, including:
 
-## Instructions :
-a. Find out what each city/Wilaya is good at, what is its yearly production, size of the land used
-  for agriculture and what it grows, productivity, etc.
+1. Minimizing consumer prices
+2. Maximizing production output
+3. Achieving self-sufficiency in product production
 
-b. What is the country’s consumption of main products: wheat, corn, dates, potatoes, tomatoes,
-  green pepper, aubergines ...  
+These objectives require careful consideration and definition. For instance, the lowest price for the consumer needs a meaningful definition, and the focus of maximizing production could be on specific or strategic products.
 
-c. Changes in product prices according to the seasons
+## Methodology
+The project involves:
 
-d. Suppose we ultimately want to:
+- Analyzing the agricultural capabilities of each city/Wilaya, including its yearly production, land usage for agriculture, crop types, and productivity.
+- Understanding the country's consumption patterns for main products such as wheat, corn, dates, potatoes, tomatoes, green pepper, aubergines, etc.
+- Observing the seasonal changes in product prices.
 
-  i. Have the lowest prices for the consumer (what does lowest price mean? Think about a
-    meaningful definition)
-    
-  ii. Have the highest production (in some products? Some strategic products? Etc.?)
-  
-  iii. Self-sufficiency in the production of products (all? some products? Some strategic
-    products? Etc.?)
-    
-  e. Define an appropriate objective function whenever needed.
-  
-  f. Apply different search strategies: 2 uninformed, A* or IDA* and Hill Climbing (any of its
-    versions),
-  i. Do comparative analyses and suggest the best assignment of agricultural production in the
-    country. The comparative analyses should be about the search for the solution and also about
-    the cost in terms of time and space requirements.
+The project applies different search strategies, including two uninformed strategies, A* or IDA*, and Hill Climbing. The goal is to find the best assignment of agricultural production in the country. Comparative analyses are performed to evaluate the search strategies in terms of solution quality, time, and space requirements.
 
-  g. Tackle the same problem as a constraint-satisfaction problem using any of the techniques to be
-    seen in class.
-  
-  h. Compare the results obtained in the previous two questions.
+The problem is also approached as a constraint-satisfaction problem using techniques discussed in the course. The results from both approaches are then compared.
+
+## Files
+
+### AgricultureProblem.py
+This file contains the `AgricultureProblem` class which defines the problem to be solved. It includes methods for defining the initial state, goal state, and possible actions.
+
+### City.py
+This file contains the `City` class which represents a city in the problem. Each city has a name, a list of products it can produce, and a list of neighboring cities.
+
+### Country.py
+This file contains the `Country` class which represents the entire country. It includes a list of all cities and methods for adding cities and finding a city by name.
+
+### DataLoader.py
+This file contains the `DataLoader` class which is responsible for loading data from CSV files. It includes methods for loading city data and product data.
+
+### GraphSearch.py
+This file contains the `GraphSearch` class which implements various search algorithms including IDA_Star, IDS, steepest, and UCS.
+
+### main.py
+This is the main entry point of the application. It creates an instance of the `App` class from `ProblemGUI.py` and starts the GUI.
+
+### Node.py
+This file contains the `Node` class which represents a node in a search algorithm. Each node has a state, a parent node, an action that led to it, a cost, a priority, and a depth.
+
+### ProblemGUI.py
+This file contains the `App` class which is a subclass of `tk.Tk`. This class creates and manages the GUI for the application.
+
+### Product.py
+This file contains the `Product` class which represents a product that can be produced by a city. Each product has a name, a production value, a strategic value, a removable value, a productivity value, and a list of seasons it can be produced in.
+
+### DataStructures.py
+This file contains the `PriorityQueue`, `stack`, and `queue` classes which are used in the search algorithms.
+
+## Instructions for Use
+To run the project, execute the `main()` function in the `main.py` file. The GUI will appear. Use the "Upload Wilaya CSV" and "Upload Product CSV" buttons to upload the necessary data. Select a search method from the dropdown menu and click "Search". The results will be displayed in the text field. You can save the results to a CSV file by clicking "Save to CSV".
+
+## Data
+The project uses data loaded from the `DataLoader` class. The data includes information about cities, consumption, and prices.
+
+## Dependencies
+The project requires the following Python libraries: `copy`, `time`, `tabulate`, and `markdown`.
