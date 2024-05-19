@@ -1,3 +1,19 @@
+## Dependencies and Running the Project
+
+### Dependencies
+This project requires Python and several Python packages. If you haven't installed Python yet, you can download it from the official website: https://www.python.org/downloads/
+
+After installing Python, you can install the required packages using pip. Open your terminal and run the following commands:
+`pip install copy`
+`pip install time`
+`pip install tabulate`
+`pip install tkinter`
+`pip install CustomTkinter`
+N.B. .CSV files must be compatible to our format, for the sake of testing just use the files in the diractory
+
+## Running the Project
+`python ./ProblemGUI.py`
+
 # Agriculture Problem Solver
 
 ## Overview
