@@ -52,6 +52,8 @@ def mycountry(cities_data, consumption, prices):
 
 
 def search_for_year(initial_state, strategy):
+    node_generated = 0
+    temp = 0
     total_start_time = time.time()
     summer_prod = []
     winter_prod = []
@@ -122,7 +124,8 @@ def search_for_year(initial_state, strategy):
     problem.initial_state = new_initial_state
     start_time = time.time()
     search = GraphSearch.GraphSearch(problem, strategy)
-    result = search.general_search()
+    result, temp = search.general_search()
+    node_generated += temp
     print(">>> PLAN FOR SUMMER")
     markdown_data = result.state.to_markdown().split("\n")
     headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
@@ -163,7 +166,8 @@ def search_for_year(initial_state, strategy):
     problem.initial_state = new_initial_state
     start_time = time.time()
     search = GraphSearch.GraphSearch(problem, strategy)
-    result = search.general_search()
+    result, temp = search.general_search()
+    node_generated += temp
     print(">>> PLAN FOR FALL")
     markdown_data = result.state.to_markdown().split("\n")
     headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
@@ -205,7 +209,8 @@ def search_for_year(initial_state, strategy):
     problem.products = winter_prod
     start_time = time.time()
     search = GraphSearch.GraphSearch(problem, strategy)
-    result = search.general_search()
+    result, temp = search.general_search()
+    node_generated += temp
     print(">>> PLAN FOR WINTER")
     markdown_data = result.state.to_markdown().split("\n")
     headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
@@ -246,7 +251,8 @@ def search_for_year(initial_state, strategy):
     print(f'PRODUCTION NEEDED IN SPRING : {v}')
     start_time = time.time()
     search = GraphSearch.GraphSearch(problem, strategy)
-    result = search.general_search()
+    result, temp = search.general_search()
+    node_generated += temp
     print(">>> PLAN FOR SPRING")
     markdown_data = result.state.to_markdown().split("\n")
     headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
@@ -269,7 +275,9 @@ def search_for_year(initial_state, strategy):
     rows = [[x.strip() for x in row.split("|")[1:-1]]
             for row in markdown_data[1:]]
     print(tabulate(rows, headers=headers, tablefmt="pipe"))
+    print(f"[ >>>>> NODES GENERATED <<<<< ]: {node_generated}")
     print(f"[ >>>>> SEARCH FOR YEAR PLAN TOOK <<<<< ]: {total_end_time - total_start_time} seconds")
+    
 
 
 def new_prices(initial_state, result, season):
