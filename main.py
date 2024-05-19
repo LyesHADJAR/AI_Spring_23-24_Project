@@ -4,12 +4,14 @@ import City
 import Country
 from DataLoader import DataLoader
 import GraphSearch
-import ProblemGUI
 import Product
 
 # Utility imports
 import copy
 import time
+from tabulate import tabulate
+import markdown
+
 
 def mycountry(cities_data, consumption, prices):
     productss = {}
@@ -50,6 +52,7 @@ def mycountry(cities_data, consumption, prices):
 
 
 def search_for_year(initial_state, strategy):
+    total_start_time = time.time()
     summer_prod = []
     winter_prod = []
     fall_prod = []
@@ -71,9 +74,9 @@ def search_for_year(initial_state, strategy):
             if int(initial_state.cities[list(initial_state.cities.keys())[0]].products[prod].removable[i]) == 1 and prod != 'other':
                 if i == 0:
                     s_removable.append(prod)
-                elif i == 1:
-                    w_removable.append(prod)
                 elif i == 2:
+                    w_removable.append(prod)
+                elif i == 1:
                     f_removable.append(prod)
                 elif i == 3:
                     sp_removable.append(prod)
@@ -82,9 +85,9 @@ def search_for_year(initial_state, strategy):
                 count += 1
                 if i == 0:
                     summer_prod.append(prod)
-                elif i == 1:
-                    winter_prod.append(prod)
                 elif i == 2:
+                    winter_prod.append(prod)
+                elif i == 1:
                     fall_prod.append(prod)
                 elif i == 3:
                     spring_prod.append(prod)
@@ -118,11 +121,72 @@ def search_for_year(initial_state, strategy):
     print(v)
     problem.products = summer_prod
     problem.initial_state = new_initial_state
-
+    start_time = time.time()
     search = GraphSearch.GraphSearch(problem, strategy)
     result = search.general_search()
     print("plan for summer")
-    print(result)
+    markdown_data = result.state.to_markdown().split("\n")
+    headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
+    rows = [[x.strip() for x in row.split("|")[1:-1]]
+            for row in markdown_data[1:]]
+    print(tabulate(rows, headers=headers, tablefmt="pipe"))
+    end_time = time.time()
+    print(f"[ >>>>> SEARCH FOR SUMMER SEASON PLAN TOOK <<<<< ]:  {end_time - start_time} seconds")
+    print("The total production of each product:")
+    markdown_data = result.state.to_markdown_production().split("\n")
+    headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
+    rows = [[x.strip() for x in row.split("|")[1:-1]]
+            for row in markdown_data[1:]]
+    print(tabulate(rows, headers=headers, tablefmt="pipe"))
+    result = new_prices(new_initial_state, result, 0)
+    print("The new prices of the summer season:")
+    markdown_data = result.state.to_markdown_prices("summer").split("\n")
+    headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
+    rows = [[x.strip() for x in row.split("|")[1:-1]]
+            for row in markdown_data[1:]]
+    print(tabulate(rows, headers=headers, tablefmt="pipe"))
+    # for fall
+    new_initial_state = copy.deepcopy(result.state)
+
+    # get seasons products
+    for prod in new_initial_state.total_production.keys():
+        if prod in f_removable:
+            for city in new_initial_state.cities:
+                new_initial_state.cities[city].unused_land += new_initial_state.cities[city].land_used[prod]
+                new_initial_state.cities[city].land_used[prod] = 0
+                new_initial_state.cities[city].products[prod].production = 0
+    v = 0
+    for prod in goal.total_production.keys():
+        v += goal.total_production[prod] - \
+            new_initial_state.total_production[prod]
+    print('production needed in fall')
+    print(v)
+    problem.products = fall_prod
+    problem.initial_state = new_initial_state
+    start_time = time.time()
+    search = GraphSearch.GraphSearch(problem, strategy)
+    result = search.general_search()
+    print("plan for fall")
+    markdown_data = result.state.to_markdown().split("\n")
+    headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
+    rows = [[x.strip() for x in row.split("|")[1:-1]]
+            for row in markdown_data[1:]]
+    print(tabulate(rows, headers=headers, tablefmt="pipe"))
+    end_time = time.time()
+    print(f"[ >>>>> SEARCH FOR FALL SEASON PLAN TOOK <<<<< ]: {end_time - start_time} seconds")
+    print("The total production of each product:")
+    markdown_data = result.state.to_markdown_production().split("\n")
+    headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
+    rows = [[x.strip() for x in row.split("|")[1:-1]]
+            for row in markdown_data[1:]]
+    print(tabulate(rows, headers=headers, tablefmt="pipe"))
+    result = new_prices(new_initial_state, result, 1)
+    print("The new prices of the fall season:")
+    markdown_data = result.state.to_markdown_prices("fall").split("\n")
+    headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
+    rows = [[x.strip() for x in row.split("|")[1:-1]]
+            for row in markdown_data[1:]]
+    print(tabulate(rows, headers=headers, tablefmt="pipe"))
 
     # for winter
     new_initial_state = copy.deepcopy(result.state)
@@ -134,33 +198,39 @@ def search_for_year(initial_state, strategy):
                 new_initial_state.cities[city].unused_land += new_initial_state.cities[city].land_used[prod]
                 new_initial_state.cities[city].land_used[prod] = 0
                 new_initial_state.cities[city].products[prod].production = 0
-
+    v = 0
+    for prod in goal.total_production.keys():
+        v += goal.total_production[prod] - \
+            new_initial_state.total_production[prod]
+    print('production needed in winter')
+    print(v)
     problem.initial_state = new_initial_state
     problem.products = winter_prod
+    start_time = time.time()
     search = GraphSearch.GraphSearch(problem, strategy)
     result = search.general_search()
     print("plan for winter")
-    print(result)
+    markdown_data = result.state.to_markdown().split("\n")
+    headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
+    rows = [[x.strip() for x in row.split("|")[1:-1]]
+            for row in markdown_data[1:]]
+    print(tabulate(rows, headers=headers, tablefmt="pipe"))
+    end_time = time.time()
+    print(f"[ >>>>> SEARCH FOR WINTER SEASON PLAN TOOK <<<<< ]:  {end_time - start_time} seconds")
+    print("The total production of each product:")
+    markdown_data = result.state.to_markdown_production().split("\n")
+    headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
+    rows = [[x.strip() for x in row.split("|")[1:-1]]
+            for row in markdown_data[1:]]
+    print(tabulate(rows, headers=headers, tablefmt="pipe"))
+    result = new_prices(new_initial_state, result, 2)
+    print("The new prices of the winter season:")
+    markdown_data = result.state.to_markdown_prices("winter").split("\n")
+    headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
+    rows = [[x.strip() for x in row.split("|")[1:-1]]
+            for row in markdown_data[1:]]
+    print(tabulate(rows, headers=headers, tablefmt="pipe"))
 
-    # for fall
-    new_initial_state = copy.deepcopy(result.state)
-
-    # get seasons products
-    for prod in new_initial_state.total_production.keys():
-        if prod in f_removable:
-            for city in new_initial_state.cities:
-                new_initial_state.cities[city].unused_land += new_initial_state.cities[city].land_used[prod]
-                new_initial_state.cities[city].land_used[prod] = 0
-                new_initial_state.cities[city].products[prod].production = 0
-
-    problem.products = fall_prod
-    problem.initial_state = new_initial_state
-
-    search = GraphSearch.GraphSearch(problem, strategy)
-    print(f_removable)
-    result = search.general_search()
-    print("plan for fall")
-    print(result)
     # for spring
     new_initial_state = copy.deepcopy(result.state)
     # get seasons products
@@ -172,11 +242,47 @@ def search_for_year(initial_state, strategy):
                 new_initial_state.cities[city].products[prod].production = 0
     problem.products = spring_prod
     problem.initial_state = new_initial_state
-
+    v = 0
+    for prod in goal.total_production.keys():
+        v += max(0, goal.total_production[prod] -
+                 new_initial_state.total_production[prod])
+    print('PRODUCTION NEEDED IN SPRING')
+    print(v)
+    start_time = time.time()
     search = GraphSearch.GraphSearch(problem, strategy)
     result = search.general_search()
     print("plan for spring")
-    print(result)
+    markdown_data = result.state.to_markdown().split("\n")
+    headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
+    rows = [[x.strip() for x in row.split("|")[1:-1]]
+            for row in markdown_data[1:]]
+    print(tabulate(rows, headers=headers, tablefmt="pipe"))
+    end_time = time.time()
+    print(f"[ >>>>> SEARCH FOR SPRING SEASON PLAN TOOK <<<<< ]: {end_time - start_time} seconds")
+    total_end_time = time.time()
+    print("The total production of each product:")
+    markdown_data = result.state.to_markdown_production().split("\n")
+    headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
+    rows = [[x.strip() for x in row.split("|")[1:-1]]
+            for row in markdown_data[1:]]
+    print(tabulate(rows, headers=headers, tablefmt="pipe"))
+    result = new_prices(new_initial_state, result, 1)
+    print("The new prices of the spring season:")
+    markdown_data = result.state.to_markdown_prices("spring").split("\n")
+    headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
+    rows = [[x.strip() for x in row.split("|")[1:-1]]
+            for row in markdown_data[1:]]
+    print(tabulate(rows, headers=headers, tablefmt="pipe"))
+    print(f"[ >>>>> SEARCH FOR YEAR PLAN TOOK <<<<< ]: {total_end_time - total_start_time} seconds")
+
+
+def new_prices(initial_state, result, season):
+    for city in initial_state.cities.keys():
+        for prod in initial_state.cities[city].products.keys():
+            result.state.prices[prod][season] = initial_state.prices[prod][season] * \
+                initial_state.total_production[prod] / \
+                max(1, result.state.total_production[prod])
+    return result
 
 
 def main():
@@ -199,33 +305,21 @@ def main():
 
     country = mycountry(cities_data, consumption, prices)
 
-    start_of_IDA_star = time.time()
     print("------------------------------------------")
     print("search using IDA_star")
     search_for_year(country, "IDA_Star")
-    end_of_IDA_star = time.time()
-    print(f"Time taken for IDA_star: {end_of_IDA_star - start_of_IDA_star} seconds")
-    
-    start_of_IDS = time.time()
+
     print("------------------------------------------")
     print("search using IDS")
     search_for_year(country, "IDS")
-    end_of_IDS = time.time()
-    print(f"Time taken for IDS: {end_of_IDS - start_of_IDS} seconds")
-    
-    start_of_HC = time.time()
+
     print("------------------------------------------")
     print("search using Hill Climbing")
     search_for_year(country, "steepest")
-    end_of_HC = time.time()
-    print(f"Time taken for Hill Climbing: {end_of_HC - start_of_HC} seconds")
-    
-    start_of_UCS = time.time()  
+
     print("------------------------------------------")
     print("search using UCS")
     search_for_year(country, "UCS")
-    end_of_UCS = time.time()
-    print(f"Time taken for UCS: {end_of_UCS - start_of_UCS} seconds")
 
 
 if __name__ == "__main__":

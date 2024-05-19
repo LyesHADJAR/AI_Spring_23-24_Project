@@ -90,13 +90,8 @@ class AgricultureProblem:
             additionalProduction = productivity * additionalLand
         else:
             return None
-        # print("===========================")
-        # print(newState.total_production[action[1]])
-        # print(action[1])
 
         newState.add(action[1], additionalProduction)
-        # print(newState.total_production[action[1]])
-        # print("===========================")
         newState.cities[action[0]].products[action[1]].production = (
             newState.cities[action[0]].products[action[1]].production
             + additionalProduction
@@ -110,12 +105,8 @@ class AgricultureProblem:
             newState.cities[action[0]].unused_land - additionalLand
         ), 0)
         newState.cities[action[0]].land_used[action[1]] += additionalLand
-        # total_land_used = state.getTotalLandUsed(state) # To be added ez
-        # print(newState.cities[action[0]].land_used[action[1]])
         newNode = Node.Node((newState), state, action, additionalLand, 0)
         newNode.priority = self.As_node_cost(newNode)
-
-        # print(newNode.state.total_production)
         return newNode
 
     def resulth(self, state, action):
@@ -137,13 +128,8 @@ class AgricultureProblem:
         if newState.cities[action[0]].unused_land < additionalLand:
             additionalLand = newState.cities[action[0]].unused_land
             additionalProduction = productivity * additionalLand
-        # print("===========================")
-        # print(newState.total_production[action[1]])
-        # print(action[1])
 
         newState.add(action[1], additionalProduction)
-        # print(newState.total_production[action[1]])
-        # print("===========================")
         newState.cities[action[0]].products[action[1]].production = (
             newState.cities[action[0]].products[action[1]].production
             + additionalProduction
@@ -157,12 +143,9 @@ class AgricultureProblem:
             max((newState.cities[action[0]].unused_land - additionalLand), 0)
         )
         newState.cities[action[0]].land_used[action[1]] += additionalLand
-        # total_land_used = state.getTotalLandUsed(state) # To be added ez
-        # print(newState.cities[action[0]].land_used[action[1]])
         newNode = Node.Node(copy.deepcopy(newState), state,
                        action, additionalLand, 0)
         newNode.priority = self.As_node_cost(newNode)
-        # print(newNode.state.total_production)
         return newNode
 
     def goal_test(self, state):
@@ -174,7 +157,6 @@ class AgricultureProblem:
             ):
 
                 return False
-        print("true")
         return True
 
     def As_node_cost(self, node):

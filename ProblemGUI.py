@@ -1,86 +1,134 @@
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import ttk
+from tkinter import filedialog, messagebox
+import io
+import sys
+import csv  # Import the csv module
 from DataLoader import DataLoader
-import Country
-import AgricultureProblem
-import GraphSearch
+from main import mycountry, search_for_year
 
+class App(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("AI Project GUI")
+        self.geometry("1000x1200")
+        self.configure(bg='#013220')
 
-def upload_file(file_var, label_var):
-    filename = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
-    file_var.set(filename)
-    # Update the label to display the filename
-    label_var.config(text=filename.split("/")[-1])  # Display only the filename
+        self.wilaya_file = None
+        self.product_file = None
 
-def run_algorithm(products_file, wilaya_file, search_method, output_var):
-    # Load data using DataLoader
-    cities_data, consumption, total_production, prices = DataLoader.load_country_data(wilaya_file.get(), products_file.get())
+        self.upload_wilaya_button = tk.Button(self, text="Upload Wilaya CSV", command=self.upload_wilaya, bg='#013220', fg='white')
+        self.upload_wilaya_button.pack(pady=10)
 
-    # Create an instance of Country
-    country = Country.Country(cities_data, consumption, total_production, prices)
+        self.upload_product_button = tk.Button(self, text="Upload Product CSV", command=self.upload_product, bg='#013220', fg='white')
+        self.upload_product_button.pack(pady=10)
 
-    # Create an instance of AgricultureProblem
-    problem = AgricultureProblem.AgricultureProblem(country, search_method.get())
+        self.search_method_var = tk.StringVar(self)
+        self.search_method_var.set("Select Search Method")
+        self.search_methods = ["IDA_Star", "IDS", "steepest", "UCS"]
 
-    # Create an instance of GraphSearch
-    search = GraphSearch.GraphSearch(problem, search_method.get())
+        self.style = ttk.Style(self)
+        self.style.theme_use('clam')
+        self.style.configure('TMenubutton', background='#013220', foreground='white', fieldbackground='#013220')
 
-    # Perform the search
-    result = search.general_search()
+        self.search_menu = tk.OptionMenu(self, self.search_method_var, *self.search_methods)
+        self.search_menu.config(bg='#013220', fg='white')
+        self.search_menu.pack(pady=10)
 
-    # Output the result
-    output_var.set(result)
+        self.search_button = tk.Button(self, text="Search", command=self.perform_search, bg='#013220', fg='white')
+        self.search_button.pack(pady=10)
 
-root = tk.Tk()
-root.title("Agricultural Optimization Project")
+        # Create a frame for the text field and scrollbar
+        text_frame = tk.Frame(self, bg='#013220')
+        text_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-# Set window size
-root.geometry("800x500")
+        self.output_text = tk.Text(text_frame, wrap=tk.WORD, height=50, width=100, bg='#013220', fg='white', insertbackground='white')
+        self.output_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-# Green theme
-root.configure(bg="#2E8B57")  # Set background color
+        scrollbar = tk.Scrollbar(text_frame, orient=tk.VERTICAL, command=self.output_text.yview, bg='#013220', troughcolor='#013220', activebackground='#004d00', highlightbackground='#013220', highlightcolor='#013220')
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-# Create variables
-products_file = tk.StringVar()
-wilaya_file = tk.StringVar()
-search_method = tk.StringVar()
-output_var = tk.StringVar()
+        self.output_text.config(yscrollcommand=scrollbar.set)
 
-# Define button style
-button_style = {"bg": "white", "fg": "black", "activebackground": "#2E8B57", "activeforeground": "white", "highlightthickness": 0, "borderwidth": 0, "font": ("Helvetica", 12, "bold")}
+        # Place the save button below the text_frame
+        self.save_button = tk.Button(self, text="Save to CSV", command=self.save_output_to_csv, bg='#013220', fg='white')
+        self.save_button.pack(side="bottom", pady=10)
+        
+    def upload_wilaya(self):
+        self.wilaya_file = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
+        if self.wilaya_file:
+            self.upload_wilaya_button.config(text=self.wilaya_file.split("/")[-1])
+        else:
+            messagebox.showerror("Error", "Failed to upload Wilaya CSV file")
 
-# Create shadows for buttons
-def create_shadow_button(master, text, command, width):
-    shadow_button = tk.Button(master, text=text, command=command, **button_style, width=width)
-    shadow_button.pack(side="top", pady=10, anchor="center")
-    return shadow_button
+    def upload_product(self):
+        self.product_file = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
+        if self.product_file:
+            self.upload_product_button.config(text=self.product_file.split("/")[-1])
+        else:
+            messagebox.showerror("Error", "Failed to upload Product CSV file")
 
-# Create file upload buttons with shadows
-products_label = tk.Label(root, text="No file selected", bg="white", fg="black")  # Initial label
-products_shadow_button = create_shadow_button(root, "Upload Products File", lambda: upload_file(products_file, products_label), width=20)
-products_button = tk.Button(root, text="Upload Products File", command=lambda: upload_file(products_file, products_label), **button_style, width=20)
+    def perform_search(self):
+        if not self.wilaya_file or not self.product_file:
+            messagebox.showerror("Error", "Please upload both CSV files")
+            return
 
-wilaya_label = tk.Label(root, text="No file selected", bg="white", fg="black")  # Initial label
-wilaya_shadow_button = create_shadow_button(root, "Upload Wilaya File", lambda: upload_file(wilaya_file, wilaya_label), width=20)
-wilaya_button = tk.Button(root, text="Upload Wilaya File", command=lambda: upload_file(wilaya_file, wilaya_label), **button_style, width=20)
+        search_method = self.search_method_var.get()
+        if search_method == "Select Search Method":
+            messagebox.showerror("Error", "Please select a search method")
+            return
 
-# Create dropdown menu
-search_methods = ["UCS", "IDS", "IDA*", "Hill Climbing"]  # Add your search methods here
-search_dropdown = tk.OptionMenu(root, search_method, *search_methods)
-search_method.set(search_methods[0])  # Set default search method
-search_dropdown.config(bg="white", fg="black", highlightbackground="#2E8B57", activebackground="#2E8B57", activeforeground="white", font=("Helvetica", 12, "bold"))
-search_dropdown.pack(side="top", pady=10, anchor="center")
+        self.search_button.config(text="Searching...", state=tk.DISABLED)
+        self.update_idletasks()
 
-# Create run button with shadow
-run_shadow_button = create_shadow_button(root, "Run", lambda: run_algorithm(products_file, wilaya_file, search_method, output_var), width=20)
-run_button = tk.Button(root, text="Run", command=lambda: run_algorithm(products_file, wilaya_file, search_method, output_var), **button_style, width=20)
+        try:
+            cities_data, consumption, total_production, prices = DataLoader.load_country_data(self.wilaya_file, self.product_file)
+            country = mycountry(cities_data, consumption, prices)
 
-# Create output label
-output_label = tk.Label(root, textvariable=output_var, bg="white", fg="black")
-output_label.pack(side="top", pady=10, anchor="center")
+            old_stdout = sys.stdout
+            redirected_output = sys.stdout = io.StringIO()
 
-# Pack file upload labels
-products_label.pack(side="top", pady=10, anchor="center")
-wilaya_label.pack(side="top", pady=10, anchor="center")
+            search_for_year(country, search_method)
 
-root.mainloop()
+            sys.stdout = old_stdout
+
+            output = redirected_output.getvalue()
+            self.output_text.delete(1.0, tk.END)
+            self.output_text.insert(tk.END, output)
+
+            self.highlight_text("[ >>>>> SEARCH FOR SPRING SEASON PLAN TOOK <<<<< ]: ", "#39FF14")
+            self.highlight_text("[ >>>>> SEARCH FOR SUMMER SEASON PLAN TOOK <<<<< ]: ", "#39FF14")
+            self.highlight_text("[ >>>>> SEARCH FOR FALL SEASON PLAN TOOK <<<<< ]: ", "#39FF14")
+            self.highlight_text("[ >>>>> SEARCH FOR WINTER SEASON PLAN TOOK <<<<< ]: ", "#39FF14")
+            self.highlight_text("[ >>>>> SEARCH FOR YEAR PLAN TOOK <<<<< ]", "#FFFF00")
+
+            self.search_button.config(text="Done!", state=tk.NORMAL)
+
+        except Exception as e:
+            self.search_button.config(text="Search", state=tk.NORMAL)
+            messagebox.showerror("Error", f"An error occurred: {e}")
+
+        self.search_button.config(text="Done!", state=tk.NORMAL)
+
+    def highlight_text(self, pattern, color):
+        start_idx = self.output_text.search(pattern, "1.0", tk.END)
+        while start_idx:
+            end_idx = f"{start_idx} lineend"
+            self.output_text.tag_add(pattern, start_idx, end_idx)
+            self.output_text.tag_config(pattern, foreground=color)
+            start_idx = self.output_text.search(pattern, end_idx, tk.END)
+
+    def save_output_to_csv(self):
+        output_text = self.output_text.get("1.0", tk.END).strip()
+        lines = output_text.split("\n")
+
+        with open("output.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            for line in lines:
+                if line.strip():  # Check if the line is not empty
+                    fields = [field.strip() for field in line.split('|')]  # Split using '|' and strip any extra spaces
+                    writer.writerow(fields)
+
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
