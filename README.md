@@ -62,4 +62,4 @@ To run the project, execute the `main()` function in the `main.py` file. The GUI
 The project uses data loaded from the `DataLoader` class. The data includes information about cities, consumption, and prices.
 
 ## Dependencies
-The project requires the following Python libraries: `copy`, `time`, `tabulate`, and `markdown`.
+The project requires the following Python libraries: `copy`, `time`, `tabulate`, `tkinter`, and `markdown`.
