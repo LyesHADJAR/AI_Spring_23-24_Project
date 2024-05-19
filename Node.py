@@ -1,16 +1,4 @@
 class Node:
-    """
-    Represents a node in a search algorithm.
-
-    Attributes:
-        state: The state associated with the node.
-        parent: The parent node of the current node.
-        action: The action taken to reach the current node.
-        cost: The cost to reach the current node.
-        priority: The priority of the node.
-        depth: The depth of the node in the search tree.
-    """
-
     def __init__(self, state, parent=None, action=None, cost=0, priority=0):
         self.state = state
         self.parent = parent

@@ -2,7 +2,6 @@ import copy
 from DataStructures import PriorityQueue, stack, queue
 import Node
 
-
 class GraphSearch:
     def __init__(self, problem, strategy):
         self.problem = problem

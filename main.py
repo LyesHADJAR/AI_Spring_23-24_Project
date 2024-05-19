@@ -115,16 +115,15 @@ def search_for_year(initial_state, strategy):
 
     v = 0
     for prod in goal.total_production.keys():
-        v += goal.total_production[prod] - \
-            new_initial_state.total_production[prod]
-    print('production needed in summer')
-    print(v)
+        v += max(0, goal.total_production[prod] - \
+            new_initial_state.total_production[prod])
+    print(f'PRODUCTION NEEDED IN SUMMER : {v}')
     problem.products = summer_prod
     problem.initial_state = new_initial_state
     start_time = time.time()
     search = GraphSearch.GraphSearch(problem, strategy)
     result = search.general_search()
-    print("plan for summer")
+    print(">>> PLAN FOR SUMMER")
     markdown_data = result.state.to_markdown().split("\n")
     headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
     rows = [[x.strip() for x in row.split("|")[1:-1]]
@@ -157,16 +156,15 @@ def search_for_year(initial_state, strategy):
                 new_initial_state.cities[city].products[prod].production = 0
     v = 0
     for prod in goal.total_production.keys():
-        v += goal.total_production[prod] - \
-            new_initial_state.total_production[prod]
-    print('production needed in fall')
-    print(v)
+        v += max(0,goal.total_production[prod] - \
+            new_initial_state.total_production[prod])
+    print(f'PRODUCTION NEEDED IN FALL : {v}')
     problem.products = fall_prod
     problem.initial_state = new_initial_state
     start_time = time.time()
     search = GraphSearch.GraphSearch(problem, strategy)
     result = search.general_search()
-    print("plan for fall")
+    print(">>> PLAN FOR FALL")
     markdown_data = result.state.to_markdown().split("\n")
     headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
     rows = [[x.strip() for x in row.split("|")[1:-1]]
@@ -200,16 +198,15 @@ def search_for_year(initial_state, strategy):
                 new_initial_state.cities[city].products[prod].production = 0
     v = 0
     for prod in goal.total_production.keys():
-        v += goal.total_production[prod] - \
-            new_initial_state.total_production[prod]
-    print('production needed in winter')
-    print(v)
+        v += max(0,goal.total_production[prod] - \
+            new_initial_state.total_production[prod])
+    print(f'PRODUCTION NEEDED IN WINTER : {v}')
     problem.initial_state = new_initial_state
     problem.products = winter_prod
     start_time = time.time()
     search = GraphSearch.GraphSearch(problem, strategy)
     result = search.general_search()
-    print("plan for winter")
+    print(">>> PLAN FOR WINTER")
     markdown_data = result.state.to_markdown().split("\n")
     headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
     rows = [[x.strip() for x in row.split("|")[1:-1]]
@@ -246,12 +243,11 @@ def search_for_year(initial_state, strategy):
     for prod in goal.total_production.keys():
         v += max(0, goal.total_production[prod] -
                  new_initial_state.total_production[prod])
-    print('PRODUCTION NEEDED IN SPRING')
-    print(v)
+    print(f'PRODUCTION NEEDED IN SPRING : {v}')
     start_time = time.time()
     search = GraphSearch.GraphSearch(problem, strategy)
     result = search.general_search()
-    print("plan for spring")
+    print(">>> PLAN FOR SPRING")
     markdown_data = result.state.to_markdown().split("\n")
     headers = [x.strip() for x in markdown_data[0].split("|")[1:-1]]
     rows = [[x.strip() for x in row.split("|")[1:-1]]
