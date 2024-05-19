@@ -10,7 +10,6 @@ After installing Python, you can install the required packages using pip. Open y
 `pip install tkinter`
 `pip install CustomTkinter`
 N.B. .CSV files must be compatible to our format, for the sake of testing just use the files in the diractory
-
 ## Running the Project
 `python ./ProblemGUI.py`
 
