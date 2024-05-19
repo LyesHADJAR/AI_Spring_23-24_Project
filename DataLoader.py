@@ -87,3 +87,26 @@ class DataLoader:
                 }
 
         return cities, consumption, total_production, prices
+    
+    # =========== NEEDED FOR CSP ===========
+    def extract_variables(city_filename, products_file):
+        variables = {}
+        unique_wilaya_names = set()
+
+    # Extract Wilaya names from city data
+        with open(city_filename, newline='') as city_file:
+            city_reader = csv.DictReader(city_file)
+            for city_row in city_reader:
+                wilaya_name = city_row['wilaya name']
+                if wilaya_name not in variables:
+                   variables[wilaya_name] = []
+
+        # Extract Products for each Wilaya
+        with open(products_file, newline='') as product_file:
+            product_reader = csv.DictReader(product_file)
+            for product_row in product_reader:
+                product_name = product_row['product name']
+                for wilaya_name in variables:
+                   variables[wilaya_name].append(product_name.lower().replace(' ', '_'))
+
+        return variables
