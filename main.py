@@ -286,19 +286,6 @@ def new_prices(initial_state, result, season):
 
 
 def main():
-    myproducts = [
-        "wheat",
-        "corn",
-        "dates",
-        "potatoes",
-        "tomatoes",
-        "green pepper",
-        "aubergines",
-    ]
-    myproducts1 = [
-        "wheat",
-    ]
-    myproducts2 = ["aubergines"]
     # Load data using DataLoader
     cities_data, consumption, total_production, prices = DataLoader.load_country_data(
         "Wilaya.csv", "products.csv")

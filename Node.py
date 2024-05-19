@@ -24,18 +24,3 @@ class Node:
 
     def __gt__(self, other):
         return self.priority > other.priority
-
-    # def __str__(self):
-    #     country = self.state
-    #     country_details = "\n".join(
-    #         f"{city_name}: {city}" for city_name, city in country.cities.items()
-    #     )
-    #     return (
-    #         f"State: {country_details}\n"
-    #         f"Parent: {self.parent}\n"
-    #         f"Action: {self.action}\n"
-    #         f"Cost: {self.cost}\n"
-    #         f"Priority: {self.priority}\n"
-    #         f"Depth: {self.depth}"
-    #     )
-    
