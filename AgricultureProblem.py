@@ -53,7 +53,7 @@ class AgricultureProblem:
         return total_land_needed
 
     def get_best_neighbor(self, node):
-        if node.state.getUnusedLand() == 0:
+        if node.state.getUnusedLand()<=self.initial_state.getUnusedLand()*0.3:
             return None
         best_neighbor = None
         best_value = float("-inf")

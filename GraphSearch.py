@@ -2,13 +2,13 @@ import copy
 from DataStructures import PriorityQueue, stack, queue
 import Node
 
-
 class GraphSearch:
     def __init__(self, problem, strategy):
         self.problem = problem
         self.strategy = strategy
 
     def general_search(self):
+        counter=1
         initial_node = Node.Node(self.problem.initial_state)
         explored = set()
 
@@ -31,17 +31,18 @@ class GraphSearch:
                 current_node = node
                 best_neighbor = self.problem.get_best_neighbor(current_node)
                 if best_neighbor != None:
+                    counter+=1
 
                     frontier.put(best_neighbor, best_neighbor.priority)
                 else:
-                    return node
+                    return node,counter
             else:
                 if self.problem.goal_test(node.state):
-                    return (node)
+                    return (node),counter
 
                 explored.add(node.state)
                 for action in self.problem.actions(node.state):
-
+                    counter+=1
                     child_node = copy.deepcopy(
                         self.problem.result(node, action))
                     if child_node == None:
@@ -62,7 +63,7 @@ class GraphSearch:
                             depth += 1
                             continue
 
-        return "failure"
+        return "failure",counter
 
     def get_path(self, node):
         path = []

@@ -1,5 +1,4 @@
 from tabulate import tabulate
-import markdown
 class Country:
     def __init__(self, cities, consumption, total_production, prices):
         self.cities = cities  # dictionary ( city : City )
