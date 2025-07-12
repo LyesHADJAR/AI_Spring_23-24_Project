@@ -52,7 +52,7 @@ st.download_button(
 st.subheader("Product File:")
 st.download_button(
     label="Download Example Product CSV",
-    data = pd.read_csv("Products.csv").to_csv(index=False),
+    data = pd.read_csv("products.csv").to_csv(index=False),
     file_name="example_product.csv"
 )
 # ----- FILE UPLOAD -----
