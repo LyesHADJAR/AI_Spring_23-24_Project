@@ -3,5 +3,5 @@ base = "light"
 primaryColor = "#006600"
 backgroundColor = "#001f00"
 secondaryBackgroundColor = "#003300"
-textColor = "#ccffcc"
+textColor =rgb(255, 255, 255)
 font = "sans serif"
