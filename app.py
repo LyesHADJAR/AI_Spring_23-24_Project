@@ -37,7 +37,24 @@ st.markdown("""
 
 # ----- APP TITLE -----
 st.title("🌱 Agricultural Land Optimizer")
+st.write(""" 
+     Optimize agricultural land use with advanced search methods.
+     For more information about the methodology and methodology please visit our [GitHub repository]
+         https://github.com/LyesHADJAR/AI_Spring_23-24_Project
+     And for curious testers without proper date you can use our example files:
 
+""")
+st.subheader("Wilaya File:")
+st.download_button(
+    label="Download Example Wilaya CSV",
+    data = pd.read_csv("Wilaya.csv").to_csv(index=False),
+    file_name="example_wilaya.csv")
+st.subheader("Product File:")
+st.download_button(
+    label="Download Example Product CSV",
+    data = pd.read_csv("Products.csv").to_csv(index=False),
+    file_name="example_product.csv"
+)
 # ----- FILE UPLOAD -----
 wilaya_file = st.file_uploader("📄 Upload Wilaya CSV File", type=["csv"])
 product_file = st.file_uploader("📄 Upload Product CSV File", type=["csv"])
