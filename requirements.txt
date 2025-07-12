@@ -1,5 +1,4 @@
 streamlit
 pandas
-io
-sys
-csv
+scikit-learn
+numpy
