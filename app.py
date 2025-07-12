@@ -39,9 +39,9 @@ st.markdown("""
 st.title("🌱 Agricultural Land Optimizer")
 st.write(""" 
      Optimize agricultural land use with advanced search methods.
-     For more information about the methodology and methodology please visit our [GitHub repository]
+     For more information about the methodology please visit our [GitHub repository]:
          https://github.com/LyesHADJAR/AI_Spring_23-24_Project
-     And for curious testers without proper date you can use our example files:
+     And for curious testers without proper data you can use our example files:
 
 """)
 st.subheader("Wilaya File:")
